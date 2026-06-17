@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Whisked by Vee</title>
+<style>
+:root{
+  --plum:#3B0F35;--plum-mid:#5C1F53;--plum-light:#7A2D6E;
+  --cream:#FDF6EE;--cream-dk:#F2E8D8;
+  --gold:#B8860B;--gold-lt:#E8C84A;--gold-pale:#FDF2CA;
+  --rose:#E8B4B8;--rose-dk:#C98A8E;
+  --text:#1A1A1A;--soft:#5A5A5A;
+  --white:#FFF;--ok:#2E7D52;--bad:#C0392B;--warn:#C87000;
+  --border:#DFD0C0;
+  --sh:0 2px 12px rgba(59,15,53,.10);--sh2:0 6px 28px rgba(59,15,53,.15);
+  --r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh;font-size:15px;}
+/* HEADER */
+.hdr{background:linear-gradient(140deg,var(--plum) 0%,var(--plum-mid) 55%,var(--plum-light) 100%);color:#fff;padding:14px 18px 0;position:sticky;top:0;z-index:200;box-shadow:var(--sh2);}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.hdr-logo{font-size:24px;}
+.hdr-name{font-size:18px;font-weight:800;letter-spacing:.5px;font-style:italic;}
+.hdr-sub{font-size:10px;opacity:.7;letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.hdr-badge{margin-left:auto;background:var(--gold-lt);color:var(--plum);font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.5px;}
+/* TABS */
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tb{background:none;border:none;color:rgba(255,255,255,.55);font-size:12px;font-weight:600;padding:9px 13px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;border-radius:6px 6px 0 0;font-family:inherit;}
+.tb:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.08);}
+.tb.active{color:var(--gold-lt);border-bottom-color:var(--gold-lt);background:rgba(255,255,255,.10);}
+/* MAIN */
+.tc{display:none;padding:16px;max-width:860px;margin:0 auto;}
+.tc.active{display:block;}
+/* CARD */
+.card{background:var(--white);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border);}
+.ctitle{font-size:12px;font-weight:800;color:var(--plum);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+/* FORM */
+label{font-size:12px;font-weight:700;color:var(--soft);display:block;margin-bottom:4px;}
+input,select,textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--rs);padding:9px 10px;font-size:14px;font-family:inherit;background:var(--cream);color:var(--text);transition:border-color .2s,box-shadow .2s;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--plum-mid);box-shadow:0 0 0 3px rgba(92,31,83,.12);background:#fff;}
+.fr{margin-bottom:11px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+@media(max-width:500px){.fg2,.fg3{grid-template-columns:1fr;}}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--rs);border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;}
+.bp{background:var(--plum);color:#fff;}.bg{background:var(--gold);color:#fff;}.bo{background:transparent;color:var(--plum);border:2px solid var(--plum);}.bd{background:var(--bad);color:#fff;}.bgreen{background:var(--ok);color:#fff;}
+.bsm{padding:6px 10px;font-size:12px;}.bfull{width:100%;}
+/* CAKE LINE */
+.cake-line{background:var(--cream-dk);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:10px;}
+.cake-line-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.cake-line-num{font-size:12px;font-weight:800;color:var(--plum);text-transform:uppercase;}
+/* ING ROW */
+.ir{display:grid;grid-template-columns:1fr 65px 65px 75px 32px;gap:6px;align-items:center;margin-bottom:6px;}
+@media(max-width:520px){.ir{grid-template-columns:1fr 55px 55px 65px 28px;gap:4px;}.ir input,.ir select{font-size:12px;padding:7px 6px;}}
+.xbtn{background:var(--rose);color:var(--bad);border:none;border-radius:6px;width:30px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.xbtn:active{background:var(--rose-dk);color:#fff;}
+/* DELIVERY OPTS */
+.dopts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.dopt{flex:1;min-width:80px;padding:9px 7px;border:2px solid var(--border);border-radius:var(--rs);text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:var(--soft);background:var(--cream);transition:all .2s;user-select:none;}
+.dopt.sel{border-color:var(--plum-mid);background:var(--plum);color:#fff;}
+.dopt-ico{font-size:17px;display:block;margin-bottom:2px;}
+/* INVOICE PREVIEW */
+.inv-box{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.inv-hdr{background:linear-gradient(135deg,var(--plum) 0%,var(--plum-light) 100%);color:#fff;padding:20px;text-align:center;}
+.inv-hdr-name{font-size:24px;font-weight:900;letter-spacing:2px;font-style:italic;}
+.inv-hdr-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.75;margin-top:3px;}
+.inv-hdr-contact{font-size:11px;opacity:.7;margin-top:5px;}
+.inv-div{height:2px;background:linear-gradient(90deg,transparent,#E8C84A,transparent);}
+.inv-body{padding:16px;}
+.inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;font-size:12.5px;}
+.inv-meta-item strong{color:var(--plum);font-size:10px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px;}
+.inv-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.inv-tbl th{background:var(--cream-dk);color:var(--plum);font-weight:800;padding:7px 9px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;}
+.inv-tbl td{padding:9px 9px;border-bottom:1px solid var(--border);}
+.inv-tbl tr:last-child td{border-bottom:none;}
+.trow{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px dashed var(--border);}
+.trow:last-child{border-bottom:none;}
+.trow.final{font-size:16px;font-weight:900;color:var(--plum);border-top:2px solid var(--plum);margin-top:7px;padding-top:10px;}
+.inv-note{margin-top:9px;font-size:12px;color:var(--soft);background:var(--cream);padding:7px 11px;border-radius:var(--rs);border-left:3px solid var(--rose-dk);}
+.inv-ftr{background:var(--gold-pale);border-top:1px solid #E8D8A0;padding:11px;text-align:center;font-size:11.5px;color:var(--plum);font-weight:600;font-style:italic;}
+/* BREAKDOWN */
+.bkdn{background:var(--cream-dk);border-radius:var(--rs);padding:12px;border:1px dashed var(--border);}
+.bkdn-title{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.brow{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;border-bottom:1px solid var(--border);}
+.brow:last-child{border-bottom:none;font-weight:800;color:var(--plum);}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.sc{background:#fff;border-radius:var(--rs);padding:12px;text-align:center;box-shadow:var(--sh);border:1px solid var(--border);}
+.sv{font-size:18px;font-weight:800;color:var(--plum);}
+.sl{font-size:10px;color:var(--soft);margin-top:2px;}
+/* RECIPE */
+.rr{display:grid;grid-template-columns:1fr 50px 70px 70px 30px;gap:6px;align-items:center;margin-bottom:6px;}
+@media(max-width:500px){.rr{grid-template-columns:1fr 40px 58px 58px 28px;gap:3px;}.rr input,.rr select{font-size:12px;padding:6px 5px;}}
+.qout{background:linear-gradient(135deg,var(--plum),var(--plum-light));color:#fff;border-radius:6px;padding:7px 5px;font-size:12px;font-weight:800;text-align:center;}
+/* INVENTORY */
+.ii{display:grid;grid-template-columns:1fr 70px 70px auto auto;gap:6px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
+@media(max-width:500px){.ii{grid-template-columns:1fr 55px auto auto;}.ii-p{display:none;}}
+.ii:last-child{border-bottom:none;}
+.sb-wrap{width:100%;height:4px;background:var(--border);border-radius:3px;margin-top:3px;}
+.sb{height:4px;border-radius:3px;background:var(--ok);}.sb.warn{background:var(--warn);}.sb.danger{background:var(--bad);}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;}
+.bok{background:#d4edda;color:var(--ok);}.blow{background:#fff3cd;color:var(--warn);}.bout{background:#f8d7da;color:var(--bad);}
+/* ORDER CARDS */
+.ocard{background:#fff;border-radius:var(--rs);padding:14px;margin-bottom:9px;border:1px solid var(--border);box-shadow:var(--sh);}
+.ohdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.oname{font-weight:800;font-size:14px;color:var(--plum);}
+.oamt{font-size:16px;font-weight:900;color:var(--plum);}
+.odet{font-size:12.5px;color:var(--soft);margin-top:3px;}
+.oact{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
+/* STATUS BADGES */
+.st-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.st-unpaid{background:#f8d7da;color:var(--bad);}
+.st-sent{background:#fff3cd;color:var(--warn);}
+.st-paid{background:#d4edda;color:var(--ok);}
+.st-overdue{background:#3B0F35;color:#fff;}
+/* STATUS FILTER */
+.st-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.stf{padding:6px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--soft);font-family:inherit;transition:all .2s;}
+.stf.active{background:var(--plum);color:#fff;border-color:var(--plum);}
+/* CUSTOMERS */
+.cust-card{background:#fff;border-radius:var(--rs);padding:14px;margin-bottom:9px;border:1px solid var(--border);box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.cust-info{flex:1;}
+.cust-name{font-weight:800;font-size:14px;color:var(--plum);}
+.cust-det{font-size:12px;color:var(--soft);margin-top:3px;}
+/* SETTINGS */
+.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.slbl strong{display:block;font-size:14px;}.slbl span{font-size:12px;color:var(--soft);}
+.mwrap{display:flex;align-items:center;gap:6px;}.mwrap input{width:80px;text-align:center;font-weight:800;}
+.pct{font-weight:800;color:var(--plum);}
+/* MISC */
+.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:16px;}
+.mover.open{display:flex;}
+.modal{background:#fff;border-radius:var(--r);padding:20px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh2);}
+.mtitle{font-size:16px;font-weight:800;color:var(--plum);margin-bottom:13px;}
+.mact{display:flex;gap:8px;margin-top:16px;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--plum);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:700;z-index:9999;transition:transform .3s;box-shadow:var(--sh2);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.empty{text-align:center;padding:32px 20px;color:var(--soft);}
+.empty-ico{font-size:36px;margin-bottom:8px;}
+.divider{height:1px;background:var(--border);margin:12px 0;}
+.flex-b{display:flex;justify-content:space-between;align-items:center;}
+.flex-g{display:flex;gap:8px;flex-wrap:wrap;}
+.tsm{font-size:12px;color:var(--soft);}
+.mt8{margin-top:8px;}.mt12{margin-top:12px;}
+.hint{font-size:12px;color:var(--soft);background:var(--cream);padding:8px 11px;border-radius:var(--rs);border-left:3px solid var(--plum-mid);margin-bottom:12px;}
+.abar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.rpv-btn{padding:7px 13px;border:2px solid var(--border);border-radius:var(--rs);font-size:12.5px;font-weight:700;cursor:pointer;background:var(--cream);color:var(--soft);transition:all .2s;font-family:inherit;}
+.rpv-btn.active{border-color:var(--plum);background:var(--plum);color:#fff;}
+/* FROSTING */
+.frosting-item{display:grid;grid-template-columns:1fr 90px 30px;gap:6px;align-items:center;margin-bottom:6px;}
+/* INGREDIENT PICKER */
+.ing-pick-item{display:grid;grid-template-columns:24px 1fr 70px;gap:8px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--border);cursor:pointer;}
+.ing-pick-item:last-child{border-bottom:none;}
+.ing-pick-item:hover{background:var(--cream-dk);}
+.ing-pick-cb{width:17px;height:17px;accent-color:var(--plum);cursor:pointer;flex-shrink:0;}
+.ing-pick-name{font-weight:700;font-size:13px;}
+.ing-pick-meta{font-size:11px;color:var(--soft);margin-top:1px;}
+.ing-pick-qty{font-size:13px;padding:6px 7px;border:1.5px solid var(--border);border-radius:var(--rs);background:var(--cream);text-align:center;width:100%;outline:none;}
+.ing-pick-qty:focus{border-color:var(--plum-mid);background:#fff;}
+/* FINANCE KPI */
+#fin-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+@media(min-width:600px){#fin-kpi-grid{grid-template-columns:repeat(4,1fr);}}
+/* UNSAVED */
+#sett-unsaved{font-size:12px;color:var(--warn);font-weight:700;display:none;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-logo">&#127874;</div>
+    <div><div class="hdr-name">Whisked by Vee</div><div class="hdr-sub">Artisan Bake House</div></div>
+    <div class="hdr-badge">&#10022; STUDIO</div>
+  </div>
+  <div id="sync-status" style="text-align:right;padding-bottom:6px;padding-right:2px;font-size:11px;opacity:.85;">&#x25CB; Loading…</div>
+  <div class="tabs">
+    <button class="tb active" onclick="ST('new-order',this)">&#x2795; New Order</button>
+    <button class="tb" onclick="ST('invoices',this)">&#x1F4CB; Invoices</button>
+    <button class="tb" onclick="ST('customers',this)">&#x1F464; Customers</button>
+    <button class="tb" onclick="ST('recipe',this)">&#x1F9EA; Ingredients</button>
+    <button class="tb" onclick="ST('inventory',this)">&#x1F4E6; Inventory</button>
+    <button class="tb" onclick="ST('financials',this)">&#x1F4CA; Financials</button>
+    <button class="tb" onclick="ST('templates',this)">&#x1F9F1; Templates</button>
+    <button class="tb" onclick="ST('settings',this)">&#x2699;&#xFE0F; Settings</button>
+  </div>
+</div>
+
+<!-- ══════════════ NEW ORDER ══════════════ -->
+<div id="tab-new-order" class="tc active">
+
+  <!-- Customer picker -->
+  <div class="card">
+    <div class="ctitle">&#x1F464; Customer</div>
+    <div class="fg2">
+      <div class="fr">
+        <label>Select Customer</label>
+        <select id="o-cust-sel" onchange="pickCustomer()">
+          <option value="">-- Choose or type below --</option>
+        </select>
+      </div>
+      <div class="fr">
+        <label>Customer Name</label>
+        <input type="text" id="o-cust-name" placeholder="Full name" oninput="updPreview()">
+      </div>
+    </div>
+    <div id="o-cust-details" style="display:none;background:var(--cream-dk);border-radius:var(--rs);padding:10px 12px;margin-top:-4px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--plum-mid);">
+      <span id="o-cust-phone-lbl"></span><span id="o-cust-addr-lbl"></span>
+    </div>
+    <div class="fg2">
+      <div class="fr"><label>Order Date</label><input type="date" id="o-date" oninput="updPreview()"></div>
+      <div class="fr"><label>Collection / Delivery Date</label><input type="date" id="o-deldate" oninput="updPreview()"></div>
+    </div>
+    <div class="fr"><label>Custom Description / Notes (shown on invoice)</label><textarea id="o-notes" rows="2" placeholder="e.g. Gluten-free base, extra moist, delivery to East Legon..." oninput="updPreview()"></textarea></div>
+  </div>
+
+  <!-- Cakes -->
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:10px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F370; Cakes Ordered</div>
+      <button class="btn bo bsm" onclick="addCakeLine()">+ Add Cake</button>
+    </div>
+    <div id="cake-lines"></div>
+  </div>
+
+  <!-- Ingredients (internal) -->
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:10px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F6D2; Ingredients <span style="font-size:10px;font-weight:500;text-transform:none;color:var(--soft);">(private — not on invoice)</span></div>
+      <button class="btn bp bsm" onclick="openIngPicker()">&#x1F4CB; Pick from List</button>
+    </div>
+    <div class="hint" style="margin-bottom:10px;">Choose ingredients from your master list, or add a custom row. Qty × Unit Cost = Total.</div>
+    <div style="display:grid;grid-template-columns:1fr 65px 65px 75px 30px;gap:6px;margin-bottom:6px;">
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">INGREDIENT</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">QTY</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">UNIT COST</span>
+      <span style="font-size:10px;font-weight:700;color:var(--plum);">TOTAL (GHS)</span>
+      <span></span>
+    </div>
+    <div id="ing-list"></div>
+    <button class="btn bo bsm mt8" onclick="addIng()">+ Custom Row</button>
+  </div>
+
+  <!-- Delivery -->
+  <div class="card">
+    <div class="ctitle">&#x1F697; Delivery</div>
+    <div class="dopts">
+      <div class="dopt sel" id="dopt-pickup" onclick="setDel('pickup')"><span class="dopt-ico">&#x1F3EA;</span>Pick Up</div>
+      <div class="dopt" id="dopt-free" onclick="setDel('free')"><span class="dopt-ico">&#x1F195;</span>Free Delivery</div>
+      <div class="dopt" id="dopt-paid" onclick="setDel('paid')"><span class="dopt-ico">&#x1F697;</span>Paid Delivery</div>
+    </div>
+    <div id="del-fee-row" style="display:none;" class="fr">
+      <label>Delivery Fee (GHS)</label>
+      <input type="number" id="o-delfee" value="0" min="0" oninput="updPreview()">
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="card">
+    <div class="ctitle">&#x1F4B0; Pricing</div>
+    <div class="srow">
+      <div class="slbl"><strong>Labour Cost</strong><span>Fixed amount (GHS)</span></div>
+      <div class="mwrap"><span style="font-size:12px;color:var(--soft);font-weight:700;">GHS</span><input type="number" id="o-labour" value="50" min="0" step="5" oninput="updPreview()" style="width:90px;"></div>
+    </div>
+    <div class="srow">
+      <div class="slbl"><strong>Profit Margin</strong><span>% added on top</span></div>
+      <div class="mwrap"><input type="number" id="o-profit" value="25" min="0" max="500" oninput="updPreview()"><span class="pct">%</span></div>
+    </div>
+    <div class="srow">
+      <div class="slbl"><strong>Discount</strong><span>Optional deduction</span></div>
+      <div class="mwrap"><span style="font-size:12px;color:var(--soft);font-weight:700;">GHS</span><input type="number" id="o-disc" value="0" min="0" oninput="updPreview()" style="width:90px;"></div>
+    </div>
+  </div>
+
+  <!-- Internal breakdown -->
+  <div class="card">
+    <div class="ctitle">&#x1F512; Internal Breakdown</div>
+    <div id="bkdn-box"></div>
+  </div>
+
+  <!-- Preview -->
+  <div class="card">
+    <div class="ctitle">&#x1F9FE; Document Preview</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="rpv-btn active" id="rpv-proforma" onclick="switchPreview('proforma')">&#x1F4CB; Proforma</button>
+      <button class="rpv-btn" id="rpv-receipt" onclick="switchPreview('receipt')">&#x2705; Payment Receipt</button>
+    </div>
+    <div class="inv-box" id="inv-preview"></div>
+    <div class="abar">
+      <button class="btn bp" onclick="saveOrder()">&#x1F4BE; Save Order</button>
+      <button class="btn bg" onclick="printDoc('proforma')">&#x1F5A8; Proforma PDF</button>
+      <button class="btn bgreen" onclick="printDoc('receipt')">&#x2705; Receipt PDF</button>
+      <button class="btn" style="background:#25D366;color:#fff;" onclick="shareWhatsApp()">&#x1F4F2; Share</button>
+      <button class="btn bo" onclick="clearOrder()">&#x1F5D1; Clear</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ INVOICES ══════════════ -->
+<div id="tab-invoices" class="tc">
+  <div class="stats" id="inv-stats-row">
+    <div class="sc"><div class="sv" id="is-total">0</div><div class="sl">Total Orders</div></div>
+    <div class="sc"><div class="sv" style="color:var(--gold);" id="is-rev">0</div><div class="sl">Revenue GHS</div></div>
+    <div class="sc"><div class="sv" style="color:var(--bad);" id="is-unpaid">0</div><div class="sl">Unpaid</div></div>
+  </div>
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;">
+      <div class="ctitle" style="margin-bottom:0;">All Invoices</div>
+      <input type="text" id="inv-search" placeholder="Search..." style="width:120px;font-size:12.5px;" oninput="rendInvoices()">
+    </div>
+    <div class="st-filter">
+      <button class="stf active" onclick="setInvFilter('all',this)">All</button>
+      <button class="stf" onclick="setInvFilter('unpaid',this)">Unpaid</button>
+      <button class="stf" onclick="setInvFilter('sent',this)">Sent</button>
+      <button class="stf" onclick="setInvFilter('paid',this)">Paid</button>
+      <button class="stf" onclick="setInvFilter('overdue',this)">Overdue</button>
+    </div>
+    <div id="inv-list-orders"></div>
+  </div>
+</div>
+
+<!-- ══════════════ CUSTOMERS ══════════════ -->
+<div id="tab-customers" class="tc">
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F464; Customer Directory</div>
+      <button class="btn bp bsm" onclick="openCustModal()">+ Add Customer</button>
+    </div>
+    <div id="cust-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════ RECIPES ══════════════ -->
+<div id="tab-recipe" class="tc">
+  <!-- Ingredient Master List -->
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F9EA; Ingredient Master List</div>
+      <button class="btn bp bsm" onclick="openIngMasterModal()">+ Add Ingredient</button>
+    </div>
+    <div class="hint">Your master list of ingredients with unit costs. These auto-fill when you load a cake template. You can add, edit or delete any ingredient here.</div>
+    <div style="display:grid;grid-template-columns:1fr 80px 90px 70px auto;gap:6px;margin-bottom:8px;padding:0 4px;">
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">INGREDIENT</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">UNIT</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">COST/UNIT (GHS)</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">STOCK</span>
+      <span></span>
+    </div>
+    <div id="ing-master-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════ INVENTORY ══════════════ -->
+<div id="tab-inventory" class="tc">
+  <div class="stats">
+    <div class="sc"><div class="sv" id="inv-n">0</div><div class="sl">Items</div></div>
+    <div class="sc"><div class="sv" style="color:var(--warn);" id="inv-low">0</div><div class="sl">Low Stock</div></div>
+    <div class="sc"><div class="sv" style="color:var(--bad);" id="inv-out">0</div><div class="sl">Out of Stock</div></div>
+  </div>
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;"><div class="ctitle" style="margin-bottom:0;">Stock</div><button class="btn bp bsm" onclick="openInvModal()">+ Add Item</button></div>
+    <div id="inv-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════ FINANCIALS ══════════════ -->
+<div id="tab-financials" class="tc">
+  <div class="card" style="padding:12px 16px;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div class="ctitle" style="margin-bottom:0;flex:1;">&#x1F4CA; Financial Overview</div>
+      <select id="fin-period" onchange="rendFin()" style="width:auto;padding:7px 10px;font-size:12.5px;">
+        <option value="all">All Time</option>
+        <option value="thismonth">This Month</option>
+        <option value="lastmonth">Last Month</option>
+        <option value="thisyear">This Year</option>
+        <option value="custom">Custom Range</option>
+      </select>
+      <div id="fin-custom-range" style="display:none;gap:6px;flex-wrap:wrap;align-items:center;">
+        <input type="date" id="fin-from" onchange="rendFin()" style="width:auto;font-size:12.5px;padding:7px 9px;">
+        <span style="font-size:12px;color:var(--soft);">to</span>
+        <input type="date" id="fin-to" onchange="rendFin()" style="width:auto;font-size:12.5px;padding:7px 9px;">
+      </div>
+    </div>
+  </div>
+  <div id="fin-kpi-grid"></div>
+  <div id="fin-verdict" class="card" style="text-align:center;padding:18px;"></div>
+  <div class="card"><div class="ctitle">Revenue vs Cost per Order</div><div style="position:relative;width:100%;height:200px;"><canvas id="fin-chart-bar"></canvas></div></div>
+  <div class="card"><div class="ctitle">Monthly Revenue Trend</div><div style="position:relative;width:100%;height:190px;"><canvas id="fin-chart-line"></canvas></div></div>
+  <div class="card">
+    <div class="ctitle">Cost Breakdown</div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+      <div style="position:relative;width:150px;height:150px;flex-shrink:0;"><canvas id="fin-chart-pie"></canvas></div>
+      <div id="fin-pie-legend" style="flex:1;min-width:130px;font-size:12.5px;"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ctitle">Order Breakdown</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;" id="fin-table">
+        <thead><tr style="border-bottom:1.5px solid var(--border);">
+          <th style="text-align:left;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">Order</th>
+          <th style="text-align:right;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">Ing.</th>
+          <th style="text-align:right;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">Labour</th>
+          <th style="text-align:right;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">Charged</th>
+          <th style="text-align:right;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">Profit</th>
+          <th style="text-align:right;padding:6px 7px;font-size:10px;text-transform:uppercase;color:var(--soft);">%</th>
+        </tr></thead>
+        <tbody id="fin-table-body"></tbody>
+      </table>
+    </div>
+    <div id="fin-empty" class="empty" style="display:none;"><div class="empty-ico">&#x1F4CB;</div><p>No orders in this period</p></div>
+  </div>
+  <div class="card">
+    <div class="ctitle">&#x1F4B8; Other Expenses</div>
+    <div class="hint">Packaging, gas, equipment, rent — affects net profit.</div>
+    <div style="display:grid;grid-template-columns:1fr 110px 30px;gap:7px;align-items:center;margin-bottom:7px;">
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">DESCRIPTION</span>
+      <span style="font-size:10px;font-weight:700;color:var(--soft);">AMOUNT (GHS)</span>
+      <span></span>
+    </div>
+    <div id="exp-list"></div>
+    <button class="btn bo bsm mt8" onclick="addExp()">+ Add Expense</button>
+  </div>
+</div>
+
+<!-- ══════════════ TEMPLATES ══════════════ -->
+<div id="tab-templates" class="tc">
+  <div class="card">
+    <div class="ctitle">&#x1F9F1; Cake Templates</div>
+    <div class="hint">Templates auto-fill ingredients when you pick a cake on a new order. Edit any ingredient to match your actual costs.</div>
+    <div class="flex-g" style="margin-bottom:12px;">
+      <button class="btn bp bsm" onclick="openNewTplModal()">+ New Cake Type</button>
+      <button class="btn bo bsm" onclick="resetTplDefaults()">&#x21BA; Reset Defaults</button>
+    </div>
+    <div id="tpl-list"></div>
+  </div>
+  <!-- Frosting Library -->
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F9C1; Frosting Library</div>
+      <button class="btn bp bsm" onclick="addFrosting()">+ Add Frosting</button>
+    </div>
+    <div class="hint">These appear as frosting options on every cake line in a new order. Add a price so it's factored into cost.</div>
+    <div id="frosting-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════ SETTINGS ══════════════ -->
+<div id="tab-settings" class="tc">
+  <div class="card">
+    <div class="flex-b" style="margin-bottom:12px;">
+      <div class="ctitle" style="margin-bottom:0;">&#x1F3EA; Bake House Profile</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="sett-unsaved">&#x25CF; Unsaved</span>
+        <button class="btn bp bsm" onclick="saveSett()">&#x1F4BE; Save</button>
+      </div>
+    </div>
+    <div class="fr"><label>Business Name</label><input type="text" id="s-name" placeholder="Whisked by Vee" oninput="markSettUnsaved()"></div>
+    <div class="fr"><label>Tagline</label><input type="text" id="s-tag" placeholder="Artisan Bake House" oninput="markSettUnsaved()"></div>
+    <div class="fg2">
+      <div class="fr"><label>Phone</label><input type="text" id="s-phone" placeholder="+233 XX XXX XXXX" oninput="markSettUnsaved()"></div>
+      <div class="fr"><label>Email</label><input type="email" id="s-email" placeholder="hello@whiskedbyvee.com" oninput="markSettUnsaved()"></div>
+    </div>
+    <div class="fr"><label>Location</label><input type="text" id="s-loc" placeholder="Dawhenya, Tema" oninput="markSettUnsaved()"></div>
+    <div class="fr"><label>Receipt Footer</label><textarea id="s-footer" rows="2" placeholder="Thank you for choosing Whisked by Vee." oninput="markSettUnsaved()"></textarea></div>
+    <div class="fr"><label>Payment Details <span style="font-weight:400;color:var(--soft);">(on proforma)</span></label><textarea id="s-payment-info" rows="3" placeholder="MTN MoMo: 024 XXX XXXX (Vee)&#10;Fidelity: 1234567890" oninput="markSettUnsaved()"></textarea></div>
+    <button class="btn bp mt8" onclick="saveSett()">&#x1F4BE; Save Settings</button>
+  </div>
+  <div class="card">
+    <div class="ctitle">&#x1F4B0; Default Margins</div>
+    <div class="srow">
+      <div class="slbl"><strong>Default Labour (GHS)</strong><span>Fixed amount per order</span></div>
+      <div class="mwrap"><span style="font-size:12px;color:var(--soft);font-weight:700;">GHS</span><input type="number" id="s-labour" value="50" min="0" oninput="markSettUnsaved()"></div>
+    </div>
+    <div class="srow">
+      <div class="slbl"><strong>Default Profit Margin</strong><span>% on top</span></div>
+      <div class="mwrap"><input type="number" id="s-profit" value="25" min="0" oninput="markSettUnsaved()"><span class="pct">%</span></div>
+    </div>
+    <button class="btn bp mt8" onclick="saveSett()">&#x1F4BE; Save</button>
+  </div>
+  <div class="card">
+    <div class="ctitle">&#x1F522; Invoice Numbering</div>
+    <div class="srow">
+      <div class="slbl"><strong>Next Proforma No.</strong></div>
+      <div class="mwrap"><span style="font-size:12px;font-weight:700;color:var(--soft);">WBV-P-</span><input type="number" id="s-next-p" min="1" style="width:80px;text-align:center;font-weight:800;" oninput="markSettUnsaved()"></div>
+    </div>
+    <div class="srow">
+      <div class="slbl"><strong>Next Receipt No.</strong></div>
+      <div class="mwrap"><span style="font-size:12px;font-weight:700;color:var(--soft);">WBV-R-</span><input type="number" id="s-next-r" min="1" style="width:80px;text-align:center;font-weight:800;" oninput="markSettUnsaved()"></div>
+    </div>
+    <button class="btn bp mt8" onclick="saveSett()">&#x1F4BE; Save</button>
+  </div>
+  <div class="card">
+    <div class="ctitle">&#x1F5C4; Data</div>
+    <div class="srow"><div class="slbl"><strong>Export Backup</strong><span>JSON file</span></div><button class="btn bo bsm" onclick="exportData()">Export</button></div>
+    <div class="srow"><div class="slbl"><strong>Import Backup</strong><span>Restore JSON</span></div><button class="btn bo bsm" onclick="document.getElementById('imp-f').click()">Import</button><input type="file" id="imp-f" accept=".json" style="display:none" onchange="importData(event)"></div>
+    <div class="srow"><div class="slbl"><strong>Clear Orders</strong><span style="color:var(--bad);">Cannot be undone</span></div><button class="btn bd bsm" onclick="clearOrders()">Clear</button></div>
+  </div>
+</div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+<!-- Customer modal -->
+<div class="mover" id="cust-modal">
+  <div class="modal">
+    <div class="mtitle" id="cust-modal-title">Add Customer</div>
+    <div class="fr"><label>Full Name *</label><input type="text" id="cm-name" placeholder="e.g. Ama Mensah"></div>
+    <div class="fr"><label>Phone</label><input type="text" id="cm-phone" placeholder="+233 XX XXX XXXX"></div>
+    <div class="fr"><label>Address / Location</label><input type="text" id="cm-addr" placeholder="e.g. East Legon, Accra"></div>
+    <div class="fr"><label>Email</label><input type="email" id="cm-email" placeholder="ama@email.com"></div>
+    <div class="fr"><label>Notes</label><textarea id="cm-notes" rows="2" placeholder="e.g. Prefers gluten-free, allergic to nuts"></textarea></div>
+    <div class="mact">
+      <button class="btn bp" onclick="saveCust()">Save Customer</button>
+      <button class="btn bo" onclick="closeModal('cust-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory modal -->
+<div class="mover" id="inv-modal">
+  <div class="modal">
+    <div class="mtitle">Inventory Item</div>
+    <div class="fr"><label>Item Name</label><input type="text" id="m-name" placeholder="e.g. Flour"></div>
+    <div class="fg2">
+      <div class="fr"><label>Current Stock</label><input type="number" id="m-stock" placeholder="5" min="0"></div>
+      <div class="fr"><label>Unit</label><select id="m-unit"><option>kg</option><option>g</option><option>L</option><option>mL</option><option>cups</option><option>tsp</option><option>tbsp</option><option>pcs</option><option>packs</option><option>bags</option><option>boxes</option></select></div>
+    </div>
+    <div class="fg2">
+      <div class="fr"><label>Low Stock Alert At</label><input type="number" id="m-min" placeholder="2" min="0"></div>
+      <div class="fr"><label>Price per Unit (GHS)</label><input type="number" id="m-price" placeholder="15.00" min="0"></div>
+    </div>
+    <div class="mact">
+      <button class="btn bp" onclick="saveInvItem()">Save</button>
+      <button class="btn bo" onclick="closeModal('inv-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Order view modal -->
+<div class="mover" id="ord-modal">
+  <div class="modal">
+    <div class="mtitle">Order Documents</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="rpv-btn active" id="mod-rpv-p" onclick="switchModalPreview('proforma')">&#x1F4CB; Proforma</button>
+      <button class="rpv-btn" id="mod-rpv-r" onclick="switchModalPreview('receipt')">&#x2705; Receipt</button>
+    </div>
+    <div id="ord-modal-body"></div>
+    <div class="mact" style="flex-wrap:wrap;">
+      <button class="btn bg bsm" onclick="printFromModal('proforma')">&#x1F5A8; Proforma</button>
+      <button class="btn bgreen bsm" onclick="printFromModal('receipt')">&#x2705; Receipt</button>
+      <button class="btn" style="background:#25D366;color:#fff;font-size:12px;padding:6px 10px;" onclick="shareModalWhatsApp()">&#x1F4F2; Share</button>
+      <button class="btn bo bsm" onclick="closeModal('ord-modal')">Close</button>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+      <div class="ctitle" style="margin-bottom:8px;">Update Status</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;" id="ord-status-btns"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Ingredient picker modal -->
+<div class="mover" id="ing-picker-modal">
+  <div class="modal" style="max-width:520px;">
+    <div class="mtitle">&#x1F4CB; Pick Ingredients</div>
+    <div style="margin-bottom:10px;">
+      <input type="text" id="ing-picker-search" placeholder="&#x1F50D; Search ingredients..." oninput="filterIngPicker()" style="font-size:13px;padding:8px 11px;">
+    </div>
+    <div class="hint" style="margin-bottom:10px;">Tick ingredients to add them. Set qty for each. Unit cost is pre-filled from your master list.</div>
+    <div id="ing-picker-list" style="max-height:55vh;overflow-y:auto;"></div>
+    <div class="mact">
+      <button class="btn bp" onclick="confirmIngPicker()">&#x2705; Add Selected</button>
+      <button class="btn bo" onclick="closeModal('ing-picker-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ingredient master modal -->
+<div class="mover" id="ing-master-modal">
+  <div class="modal">
+    <div class="mtitle" id="ing-master-modal-title">Add Ingredient</div>
+    <div class="fr"><label>Ingredient Name *</label><input type="text" id="im-name" placeholder="e.g. All-Purpose Flour"></div>
+    <div class="fg2">
+      <div class="fr"><label>Unit</label>
+        <select id="im-unit">
+          <option>g</option><option>kg</option><option>mL</option><option>L</option>
+          <option>cups</option><option>tbsp</option><option>tsp</option><option>pcs</option>
+          <option>packs</option><option>bags</option><option>boxes</option>
+        </select>
+      </div>
+      <div class="fr"><label>Cost per Unit (GHS)</label><input type="number" id="im-cost" placeholder="0.00" min="0" step="0.01"></div>
+    </div>
+    <div class="fr"><label>Current Stock (optional)</label><input type="number" id="im-stock" placeholder="e.g. 5" min="0"></div>
+    <div class="fr"><label>Notes (optional)</label><input type="text" id="im-notes" placeholder="e.g. Buy from Accra Mall"></div>
+    <div class="mact">
+      <button class="btn bp" onclick="saveIngMaster()">Save</button>
+      <button class="btn bo" onclick="closeModal('ing-master-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- New template modal -->
+<div class="mover" id="new-tpl-modal">
+  <div class="modal">
+    <div class="mtitle">New Cake Template</div>
+    <div class="fr"><label>Cake Name</label><input type="text" id="nt-name" placeholder="e.g. Carrot Cake"></div>
+    <div class="fr"><label>Emoji</label><input type="text" id="nt-emoji" placeholder="&#x1F955;" maxlength="2" style="font-size:22px;width:60px;"></div>
+    <div class="mact">
+      <button class="btn bp" onclick="saveNewTpl()">Create</button>
+      <button class="btn bo" onclick="closeModal('new-tpl-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyANNbKjmtv7GXR8lDAhlIBsYkPR2RmOJnc",
+    authDomain: "whisked-by-vee.firebaseapp.com",
+    projectId: "whisked-by-vee",
+    storageBucket: "whisked-by-vee.firebasestorage.app",
+    messagingSenderId: "905656443913",
+    appId: "1:905656443913:web:2ee9b0c135438e38ce84d8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const DOC_REF = doc(db, "bakery", "main");
+
+  // expose to global scope for the main app script
+  window._fbSave = async function(data) {
+    try {
+      await setDoc(DOC_REF, { payload: JSON.stringify(data) }, { merge: false });
+    } catch(e) {
+      console.warn("Firebase save failed, falling back to localStorage", e);
+      try { localStorage.setItem('wbv_v1', JSON.stringify(data)); } catch(le) {}
+    }
+  };
+
+  window._fbLoad = async function() {
+    try {
+      const snap = await getDoc(DOC_REF);
+      if (snap.exists()) {
+        const raw = snap.data().payload;
+        return raw ? JSON.parse(raw) : null;
+      }
+    } catch(e) {
+      console.warn("Firebase load failed, falling back to localStorage", e);
+    }
+    // fallback
+    try {
+      const r = localStorage.getItem('wbv_v1');
+      return r ? JSON.parse(r) : null;
+    } catch(le) { return null; }
+  };
+
+  // Listen for real-time updates from other devices
+  window._fbListen = function(callback) {
+    try {
+      onSnapshot(DOC_REF, function(snap) {
+        if (snap.exists()) {
+          try {
+            const data = JSON.parse(snap.data().payload || 'null');
+            if (data) callback(data);
+          } catch(e) {}
+        }
+      });
+    } catch(e) { console.warn("Firebase listener failed", e); }
+  };
+
+  // Signal that Firebase is ready
+  window._fbReady = true;
+  if (window._fbOnReady) window._fbOnReady();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ═══════════ DEFAULT FROSTINGS ═══════════
+var DEFAULT_FROSTINGS = [
+  {id:'f1',name:'Buttercream',price:30,note:'Classic smooth finish'},
+  {id:'f2',name:'Fondant',price:50,note:'Smooth, polished look'},
+  {id:'f3',name:'Cream Cheese',price:40,note:'Tangy, rich frosting'},
+  {id:'f4',name:'Chocolate Ganache',price:45,note:'Rich dark chocolate glaze'},
+  {id:'f5',name:'Whipped Cream',price:25,note:'Light and airy'},
+  {id:'f6',name:'Mirror Glaze',price:60,note:'Shiny, glossy finish'},
+  {id:'f7',name:'Naked (No Frosting)',price:0,note:'Exposed sponge layers'},
+  {id:'f8',name:'Swiss Meringue',price:45,note:'Silky, glossy meringue'},
+];
+
+var DEFAULT_INGREDIENT_MASTER = [
+  {id:'dim1',name:'All-Purpose Flour',unit:'g',cost:0.016,stock:0,notes:'~GHS 8 per 500g'},
+  {id:'dim2',name:'Caster Sugar',unit:'g',cost:0.022,stock:0,notes:'~GHS 11 per 500g'},
+  {id:'dim3',name:'Brown Sugar',unit:'g',cost:0.022,stock:0,notes:'~GHS 11 per 500g'},
+  {id:'dim4',name:'Icing Sugar',unit:'g',cost:0.02,stock:0,notes:'~GHS 10 per 500g'},
+  {id:'dim5',name:'Unsalted Butter',unit:'g',cost:0.055,stock:0,notes:'~GHS 14 per 250g'},
+  {id:'dim6',name:'Eggs',unit:'pcs',cost:2.0,stock:0,notes:'~GHS 2 per egg'},
+  {id:'dim7',name:'Vanilla Extract',unit:'tsp',cost:3.0,stock:0,notes:'~GHS 3 per tsp'},
+  {id:'dim8',name:'Vanilla Bean Paste',unit:'tsp',cost:5.0,stock:0,notes:'~GHS 5 per tsp'},
+  {id:'dim9',name:'Baking Powder',unit:'tsp',cost:0.75,stock:0,notes:'~GHS 0.75 per tsp'},
+  {id:'dim10',name:'Baking Soda',unit:'tsp',cost:0.75,stock:0,notes:'~GHS 0.75 per tsp'},
+  {id:'dim11',name:'Whole Milk',unit:'mL',cost:0.025,stock:0,notes:'~GHS 5 per 200mL'},
+  {id:'dim12',name:'Buttermilk',unit:'mL',cost:0.035,stock:0,notes:'~GHS 7 per 200mL'},
+  {id:'dim13',name:'Heavy Cream',unit:'mL',cost:0.055,stock:0,notes:'~GHS 11 per 200mL'},
+  {id:'dim14',name:'Vegetable Oil',unit:'mL',cost:0.03,stock:0,notes:'~GHS 6 per 200mL'},
+  {id:'dim15',name:'Cocoa Powder',unit:'g',cost:0.13,stock:0,notes:'~GHS 13 per 100g'},
+  {id:'dim16',name:'Red Food Colouring',unit:'tbsp',cost:3.0,stock:0,notes:'~GHS 3 per tbsp'},
+  {id:'dim17',name:'White Vinegar',unit:'tsp',cost:0.75,stock:0,notes:'~GHS 0.75 per tsp'},
+  {id:'dim18',name:'Salt',unit:'tsp',cost:0.5,stock:0,notes:'~GHS 0.5 per tsp'},
+  {id:'dim19',name:'Cream Cheese',unit:'g',cost:0.09,stock:0,notes:'~GHS 18 per 200g'},
+  {id:'dim20',name:'Lemons',unit:'pcs',cost:3.0,stock:0,notes:'~GHS 3 per lemon'},
+  {id:'dim21',name:'Grated Carrots',unit:'g',cost:0.02,stock:0,notes:'~GHS 4 per 200g'},
+  {id:'dim22',name:'Ground Cinnamon',unit:'tsp',cost:1.25,stock:0,notes:'~GHS 1.25 per tsp'},
+  {id:'dim23',name:'Ground Nutmeg',unit:'tsp',cost:2.0,stock:0,notes:'~GHS 2 per tsp'},
+  {id:'dim24',name:'Fresh Strawberries',unit:'g',cost:0.06,stock:0,notes:'~GHS 15 per 250g'},
+  {id:'dim25',name:'Dark Cherries (tinned)',unit:'g',cost:0.05,stock:0,notes:'~GHS 20 per 400g tin'},
+  {id:'dim26',name:'Kirsch / Cherry Juice',unit:'tbsp',cost:1.5,stock:0,notes:'~GHS 1.5 per tbsp'},
+  {id:'dim27',name:'Dark Chocolate (shavings)',unit:'g',cost:0.2,stock:0,notes:'~GHS 20 per 100g'},
+  {id:'dim28',name:'Hot Coffee / Water',unit:'mL',cost:0.005,stock:0,notes:'~GHS 0.5 per 100mL'},
+  {id:'dim29',name:'Fondant Icing',unit:'g',cost:0.04,stock:0,notes:'~GHS 40 per kg'},
+  {id:'dim30',name:'Buttercream (filling)',unit:'g',cost:0.045,stock:0,notes:'~GHS 18 per 400g'},
+  {id:'dim31',name:'Edible Decorations',unit:'set',cost:45.0,stock:0,notes:'~GHS 30-60 per set'}
+];
+
+var DEFAULT_TPLS = [
+  {
+    id:"vanilla-sponge", name:"Vanilla Sponge", emoji:"&#x1F370;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"250g",cost:4},
+        {name:"Caster Sugar",qty:"200g",cost:5},
+        {name:"Unsalted Butter",qty:"200g",cost:14},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Vanilla Extract",qty:"1 tsp",cost:3},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1},
+        {name:"Whole Milk",qty:"60ml",cost:2},
+        {name:"Salt",qty:"pinch",cost:0.5}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"375g",cost:6},
+        {name:"Caster Sugar",qty:"300g",cost:7},
+        {name:"Unsalted Butter",qty:"300g",cost:20},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Vanilla Extract",qty:"1.5 tsp",cost:4},
+        {name:"Baking Powder",qty:"2 tsp",cost:1.5},
+        {name:"Whole Milk",qty:"90ml",cost:3},
+        {name:"Salt",qty:"pinch",cost:0.5}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"500g",cost:8},
+        {name:"Caster Sugar",qty:"400g",cost:10},
+        {name:"Unsalted Butter",qty:"400g",cost:28},
+        {name:"Eggs",qty:"8 large",cost:16},
+        {name:"Vanilla Extract",qty:"2 tsp",cost:5},
+        {name:"Baking Powder",qty:"2.5 tsp",cost:2},
+        {name:"Whole Milk",qty:"120ml",cost:4},
+        {name:"Salt",qty:"1/4 tsp",cost:0.5}
+      ]}
+    }
+  },
+  {
+    id:"chocolate-cake", name:"Chocolate Cake", emoji:"&#x1F36B;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"200g",cost:3.5},
+        {name:"Cocoa Powder",qty:"60g",cost:8},
+        {name:"Caster Sugar",qty:"250g",cost:6},
+        {name:"Unsalted Butter",qty:"150g",cost:10.5},
+        {name:"Eggs",qty:"3 large",cost:6},
+        {name:"Buttermilk",qty:"120ml",cost:5},
+        {name:"Baking Soda",qty:"1 tsp",cost:1},
+        {name:"Baking Powder",qty:"1 tsp",cost:1},
+        {name:"Vanilla Extract",qty:"1 tsp",cost:3},
+        {name:"Hot Coffee / Water",qty:"60ml",cost:0.5}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"300g",cost:5},
+        {name:"Cocoa Powder",qty:"90g",cost:12},
+        {name:"Caster Sugar",qty:"375g",cost:9},
+        {name:"Unsalted Butter",qty:"225g",cost:16},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Buttermilk",qty:"180ml",cost:7},
+        {name:"Baking Soda",qty:"1.5 tsp",cost:1.5},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1.5},
+        {name:"Vanilla Extract",qty:"1.5 tsp",cost:4},
+        {name:"Hot Coffee / Water",qty:"90ml",cost:1}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"400g",cost:7},
+        {name:"Cocoa Powder",qty:"120g",cost:16},
+        {name:"Caster Sugar",qty:"500g",cost:12},
+        {name:"Unsalted Butter",qty:"300g",cost:21},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Buttermilk",qty:"240ml",cost:9},
+        {name:"Baking Soda",qty:"2 tsp",cost:2},
+        {name:"Baking Powder",qty:"2 tsp",cost:2},
+        {name:"Vanilla Extract",qty:"2 tsp",cost:5},
+        {name:"Hot Coffee / Water",qty:"120ml",cost:1}
+      ]}
+    }
+  },
+  {
+    id:"red-velvet", name:"Red Velvet Cake", emoji:"&#x2764;&#xFE0F;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"220g",cost:4},
+        {name:"Caster Sugar",qty:"200g",cost:5},
+        {name:"Cocoa Powder",qty:"2 tbsp",cost:3},
+        {name:"Unsalted Butter",qty:"120g",cost:8.5},
+        {name:"Eggs",qty:"2 large",cost:4},
+        {name:"Buttermilk",qty:"120ml",cost:5},
+        {name:"Red Food Colouring",qty:"2 tbsp",cost:6},
+        {name:"White Vinegar",qty:"1 tsp",cost:1},
+        {name:"Baking Soda",qty:"1 tsp",cost:1},
+        {name:"Vanilla Extract",qty:"1 tsp",cost:3},
+        {name:"Cream Cheese (frosting)",qty:"200g",cost:18},
+        {name:"Icing Sugar",qty:"200g",cost:4}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"330g",cost:6},
+        {name:"Caster Sugar",qty:"300g",cost:7},
+        {name:"Cocoa Powder",qty:"3 tbsp",cost:5},
+        {name:"Unsalted Butter",qty:"180g",cost:13},
+        {name:"Eggs",qty:"3 large",cost:6},
+        {name:"Buttermilk",qty:"180ml",cost:7},
+        {name:"Red Food Colouring",qty:"3 tbsp",cost:9},
+        {name:"White Vinegar",qty:"1.5 tsp",cost:1.5},
+        {name:"Baking Soda",qty:"1.5 tsp",cost:1.5},
+        {name:"Vanilla Extract",qty:"1.5 tsp",cost:4},
+        {name:"Cream Cheese (frosting)",qty:"300g",cost:27},
+        {name:"Icing Sugar",qty:"300g",cost:6}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"440g",cost:8},
+        {name:"Caster Sugar",qty:"400g",cost:10},
+        {name:"Cocoa Powder",qty:"4 tbsp",cost:7},
+        {name:"Unsalted Butter",qty:"240g",cost:17},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Buttermilk",qty:"240ml",cost:9},
+        {name:"Red Food Colouring",qty:"4 tbsp",cost:12},
+        {name:"White Vinegar",qty:"2 tsp",cost:2},
+        {name:"Baking Soda",qty:"2 tsp",cost:2},
+        {name:"Vanilla Extract",qty:"2 tsp",cost:5},
+        {name:"Cream Cheese (frosting)",qty:"400g",cost:36},
+        {name:"Icing Sugar",qty:"400g",cost:8}
+      ]}
+    }
+  },
+  {
+    id:"lemon-drizzle", name:"Lemon Drizzle Cake", emoji:"&#x1F34B;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"200g",cost:3.5},
+        {name:"Caster Sugar",qty:"180g",cost:4.5},
+        {name:"Unsalted Butter",qty:"180g",cost:13},
+        {name:"Eggs",qty:"3 large",cost:6},
+        {name:"Lemons (zest + juice)",qty:"2 large",cost:6},
+        {name:"Baking Powder",qty:"1 tsp",cost:1},
+        {name:"Whole Milk",qty:"2 tbsp",cost:1},
+        {name:"Icing Sugar (drizzle)",qty:"100g",cost:2}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"300g",cost:5},
+        {name:"Caster Sugar",qty:"270g",cost:7},
+        {name:"Unsalted Butter",qty:"270g",cost:19},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Lemons (zest + juice)",qty:"3 large",cost:9},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1.5},
+        {name:"Whole Milk",qty:"3 tbsp",cost:1.5},
+        {name:"Icing Sugar (drizzle)",qty:"150g",cost:3}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"400g",cost:7},
+        {name:"Caster Sugar",qty:"360g",cost:9},
+        {name:"Unsalted Butter",qty:"360g",cost:25},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Lemons (zest + juice)",qty:"4 large",cost:12},
+        {name:"Baking Powder",qty:"2 tsp",cost:2},
+        {name:"Whole Milk",qty:"4 tbsp",cost:2},
+        {name:"Icing Sugar (drizzle)",qty:"200g",cost:4}
+      ]}
+    }
+  },
+  {
+    id:"carrot-cake", name:"Carrot Cake", emoji:"&#x1F955;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"200g",cost:3.5},
+        {name:"Brown Sugar",qty:"180g",cost:5},
+        {name:"Vegetable Oil",qty:"150ml",cost:6},
+        {name:"Eggs",qty:"3 large",cost:6},
+        {name:"Grated Carrots",qty:"200g",cost:4},
+        {name:"Ground Cinnamon",qty:"1.5 tsp",cost:2},
+        {name:"Ground Nutmeg",qty:"0.5 tsp",cost:1.5},
+        {name:"Baking Soda",qty:"1 tsp",cost:1},
+        {name:"Baking Powder",qty:"1 tsp",cost:1},
+        {name:"Cream Cheese (frosting)",qty:"180g",cost:16},
+        {name:"Icing Sugar",qty:"150g",cost:3}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"300g",cost:5},
+        {name:"Brown Sugar",qty:"270g",cost:7.5},
+        {name:"Vegetable Oil",qty:"225ml",cost:9},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Grated Carrots",qty:"300g",cost:6},
+        {name:"Ground Cinnamon",qty:"2 tsp",cost:2.5},
+        {name:"Ground Nutmeg",qty:"0.75 tsp",cost:2},
+        {name:"Baking Soda",qty:"1.5 tsp",cost:1.5},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1.5},
+        {name:"Cream Cheese (frosting)",qty:"250g",cost:22},
+        {name:"Icing Sugar",qty:"220g",cost:4.5}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"400g",cost:7},
+        {name:"Brown Sugar",qty:"360g",cost:10},
+        {name:"Vegetable Oil",qty:"300ml",cost:12},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Grated Carrots",qty:"400g",cost:8},
+        {name:"Ground Cinnamon",qty:"2.5 tsp",cost:3},
+        {name:"Ground Nutmeg",qty:"1 tsp",cost:2.5},
+        {name:"Baking Soda",qty:"2 tsp",cost:2},
+        {name:"Baking Powder",qty:"2 tsp",cost:2},
+        {name:"Cream Cheese (frosting)",qty:"350g",cost:31},
+        {name:"Icing Sugar",qty:"300g",cost:6}
+      ]}
+    }
+  },
+  {
+    id:"strawberry-shortcake", name:"Strawberry Shortcake", emoji:"&#x1F353;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"200g",cost:3.5},
+        {name:"Caster Sugar",qty:"160g",cost:4},
+        {name:"Unsalted Butter",qty:"150g",cost:10.5},
+        {name:"Eggs",qty:"3 large",cost:6},
+        {name:"Vanilla Extract",qty:"1 tsp",cost:3},
+        {name:"Baking Powder",qty:"1 tsp",cost:1},
+        {name:"Fresh Strawberries",qty:"250g",cost:15},
+        {name:"Heavy Cream",qty:"200ml",cost:12},
+        {name:"Icing Sugar",qty:"50g",cost:1.5}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"300g",cost:5},
+        {name:"Caster Sugar",qty:"240g",cost:6},
+        {name:"Unsalted Butter",qty:"225g",cost:16},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Vanilla Extract",qty:"1.5 tsp",cost:4},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1.5},
+        {name:"Fresh Strawberries",qty:"400g",cost:24},
+        {name:"Heavy Cream",qty:"300ml",cost:18},
+        {name:"Icing Sugar",qty:"75g",cost:2}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"400g",cost:7},
+        {name:"Caster Sugar",qty:"320g",cost:8},
+        {name:"Unsalted Butter",qty:"300g",cost:21},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Vanilla Extract",qty:"2 tsp",cost:5},
+        {name:"Baking Powder",qty:"2 tsp",cost:2},
+        {name:"Fresh Strawberries",qty:"600g",cost:36},
+        {name:"Heavy Cream",qty:"400ml",cost:24},
+        {name:"Icing Sugar",qty:"100g",cost:2.5}
+      ]}
+    }
+  },
+  {
+    id:"black-forest", name:"Black Forest Cake", emoji:"&#x1F352;",
+    sizes:{
+      S:{label:"Small (6 inch / ~8 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"200g",cost:3.5},
+        {name:"Cocoa Powder",qty:"50g",cost:7},
+        {name:"Caster Sugar",qty:"220g",cost:5.5},
+        {name:"Eggs",qty:"4 large",cost:8},
+        {name:"Unsalted Butter",qty:"120g",cost:8.5},
+        {name:"Dark Cherries (tinned)",qty:"400g tin",cost:20},
+        {name:"Kirsch / Cherry Juice",qty:"3 tbsp",cost:5},
+        {name:"Heavy Cream",qty:"250ml",cost:15},
+        {name:"Baking Powder",qty:"1 tsp",cost:1},
+        {name:"Vanilla Extract",qty:"1 tsp",cost:3},
+        {name:"Dark Chocolate (shavings)",qty:"50g",cost:10}
+      ]},
+      M:{label:"Medium (8 inch / ~16 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"300g",cost:5},
+        {name:"Cocoa Powder",qty:"75g",cost:10},
+        {name:"Caster Sugar",qty:"330g",cost:8},
+        {name:"Eggs",qty:"6 large",cost:12},
+        {name:"Unsalted Butter",qty:"180g",cost:13},
+        {name:"Dark Cherries (tinned)",qty:"600g",cost:30},
+        {name:"Kirsch / Cherry Juice",qty:"4 tbsp",cost:7},
+        {name:"Heavy Cream",qty:"375ml",cost:22},
+        {name:"Baking Powder",qty:"1.5 tsp",cost:1.5},
+        {name:"Vanilla Extract",qty:"1.5 tsp",cost:4},
+        {name:"Dark Chocolate (shavings)",qty:"75g",cost:15}
+      ]},
+      L:{label:"Large (10 inch / ~24 slices)", ings:[
+        {name:"All-Purpose Flour",qty:"400g",cost:7},
+        {name:"Cocoa Powder",qty:"100g",cost:14},
+        {name:"Caster Sugar",qty:"440g",cost:11},
+        {name:"Eggs",qty:"8 large",cost:16},
+        {name:"Unsalted Butter",qty:"240g",cost:17},
+        {name:"Dark Cherries (tinned)",qty:"800g",cost:40},
+        {name:"Kirsch / Cherry Juice",qty:"6 tbsp",cost:9},
+        {name:"Heavy Cream",qty:"500ml",cost:30},
+        {name:"Baking Powder",qty:"2 tsp",cost:2},
+        {name:"Vanilla Extract",qty:"2 tsp",cost:5},
+        {name:"Dark Chocolate (shavings)",qty:"100g",cost:20}
+      ]}
+    }
+  },
+  {
+    id:"wedding-tiered", name:"Wedding Cake (Tiered)", emoji:"&#x1F492;",
+    sizes:{
+      S:{label:"2-Tier (~30 guests)", ings:[
+        {name:"All-Purpose Flour",qty:"800g",cost:14},
+        {name:"Caster Sugar",qty:"700g",cost:17},
+        {name:"Unsalted Butter",qty:"700g",cost:49},
+        {name:"Eggs",qty:"14 large",cost:28},
+        {name:"Vanilla Bean Paste",qty:"3 tsp",cost:15},
+        {name:"Baking Powder",qty:"4 tsp",cost:4},
+        {name:"Whole Milk",qty:"200ml",cost:7},
+        {name:"Fondant Icing",qty:"1kg",cost:40},
+        {name:"Buttercream (filling)",qty:"400g",cost:18},
+        {name:"Edible Decorations",qty:"set",cost:30}
+      ]},
+      M:{label:"3-Tier (~60 guests)", ings:[
+        {name:"All-Purpose Flour",qty:"1.4kg",cost:24},
+        {name:"Caster Sugar",qty:"1.2kg",cost:30},
+        {name:"Unsalted Butter",qty:"1.2kg",cost:84},
+        {name:"Eggs",qty:"24 large",cost:48},
+        {name:"Vanilla Bean Paste",qty:"5 tsp",cost:25},
+        {name:"Baking Powder",qty:"7 tsp",cost:7},
+        {name:"Whole Milk",qty:"350ml",cost:12},
+        {name:"Fondant Icing",qty:"2kg",cost:80},
+        {name:"Buttercream (filling)",qty:"700g",cost:32},
+        {name:"Edible Decorations",qty:"set",cost:60}
+      ]},
+      L:{label:"4-Tier (~100 guests)", ings:[
+        {name:"All-Purpose Flour",qty:"2.2kg",cost:38},
+        {name:"Caster Sugar",qty:"2kg",cost:50},
+        {name:"Unsalted Butter",qty:"2kg",cost:140},
+        {name:"Eggs",qty:"40 large",cost:80},
+        {name:"Vanilla Bean Paste",qty:"8 tsp",cost:40},
+        {name:"Baking Powder",qty:"11 tsp",cost:11},
+        {name:"Whole Milk",qty:"560ml",cost:19},
+        {name:"Fondant Icing",qty:"3.5kg",cost:140},
+        {name:"Buttercream (filling)",qty:"1.2kg",cost:55},
+        {name:"Edible Decorations",qty:"premium set",cost:120}
+      ]}
+    }
+  }
+];
+
+// ═══════════ STATE ═══════════
+var S = {
+  settings:{
+    name:'Whisked by Vee',tag:'Artisan Bake House',phone:'',email:'',loc:'',
+    footer:'Thank you for choosing Whisked by Vee. Every slice tells a story.',
+    paymentInfo:'',defaultLabour:50,defaultProfit:25,nextP:1,nextR:1
+  },
+  orders:[],inventory:[],recipes:[],templates:null,frostings:null,
+  customers:[],expenses:[]
+};
+
+var delMode='pickup',ingIdx=0,rIdx=0,cakeLineIdx=0,toastT=null;
+var proformaHTML='',receiptHTML='',activePreview='proforma';
+var editInvId=null,editCustId=null,modalOrderId=null;
+var invFilter='all';
+var finChartBar=null,finChartLine=null,finChartPie=null;
+var expIdx=0;
+
+// ═══════════ HELPERS ═══════════
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();}
+function fmtDate(s){if(!s)return'';var p=s.split('-');var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return p[2]+' '+m[parseInt(p[1])-1]+' '+p[0];}
+function G(id){return document.getElementById(id);}
+function GV(id){var e=G(id);return e?e.value:'';}
+function GF(id){return parseFloat(GV(id))||0;}
+var _saving = false;
+function saveState(){
+  showSyncStatus('syncing');
+  // Always save to localStorage immediately (fast, offline)
+  try { localStorage.setItem('wbv_v1', JSON.stringify(S)); } catch(e) {}
+  // Also save to Firebase if available
+  if (window._fbSave && !_saving) {
+    _saving = true;
+    window._fbSave(S).then(function(){ showSyncStatus('synced'); })
+      .catch(function(){ showSyncStatus('error'); })
+      .finally(function(){ _saving = false; });
+  } else {
+    showSyncStatus('offline');
+  }
+}
+function loadState(){
+  // Sync load from localStorage first so UI is instant
+  try {
+    var r = localStorage.getItem('wbv_v1');
+    if (r) S = JSON.parse(r);
+  } catch(e) {}
+}
+function getFrostings(){return S.frostings||DEFAULT_FROSTINGS;}
+function getIngMaster(){return S.ingredientMaster&&S.ingredientMaster.length?S.ingredientMaster:DEFAULT_INGREDIENT_MASTER;}
+function getTpls(){return S.templates||DEFAULT_TPLS;}
+
+// ═══════════ INIT ═══════════
+function init(){
+  loadState();  // instant from localStorage
+  applySett();
+  clearOrder();
+  clearRecipe();
+  rendInv();
+  rendInvoices();
+  rendIngMasterList();
+  rendTplList();
+  rendFrostingLib();
+  buildCustSelect();
+  rendCustList();
+  loadExpenses();
+  showSyncStatus('offline');
+
+  // Async: load latest from Firebase then set up live listener
+  function startFirebase() {
+    if (!window._fbLoad) return;
+    window._fbLoad().then(function(data) {
+      if (data) {
+        S = data;
+        // re-render everything with cloud data
+        applySett();
+        rendInv();
+        rendInvoices();
+        rendIngMasterList();
+        rendTplList();
+        rendFrostingLib();
+        buildCustSelect();
+        rendCustList();
+        loadExpenses();
+        try { localStorage.setItem('wbv_v1', JSON.stringify(S)); } catch(e) {}
+      }
+      showSyncStatus('synced');
+    }).catch(function(){ showSyncStatus('error'); });
+
+    // Real-time listener — updates UI if another device saves
+    if (window._fbListen) {
+      window._fbListen(function(data) {
+        S = data;
+        applySett();
+        rendInv();
+        rendInvoices();
+        rendIngMasterList();
+        rendTplList();
+        rendFrostingLib();
+        buildCustSelect();
+        rendCustList();
+        loadExpenses();
+        try { localStorage.setItem('wbv_v1', JSON.stringify(S)); } catch(e) {}
+        showSyncStatus('synced');
+      });
+    }
+  }
+
+  // Firebase module may load slightly after this script
+  if (window._fbReady) {
+    startFirebase();
+  } else {
+    window._fbOnReady = startFirebase;
+  }
+}
+
+function showSyncStatus(status) {
+  var el = document.getElementById('sync-status');
+  if (!el) return;
+  var map = {
+    offline: {icon: '&#x25CB;', color: '#aaa', label: 'Local only'},
+    syncing: {icon: '&#x21BB;', color: 'var(--gold)', label: 'Syncing…'},
+    synced:  {icon: '&#x2601;', color: 'var(--ok)', label: 'Cloud synced'},
+    error:   {icon: '&#x26A0;', color: 'var(--bad)', label: 'Sync failed'}
+  };
+  var m = map[status] || map.offline;
+  el.innerHTML = '<span style="color:'+m.color+';font-size:12px;font-weight:700;">'+m.icon+' '+m.label+'</span>';
+}
+
+// ═══════════ TABS ═══════════
+function ST(name,el){
+  document.querySelectorAll('.tc').forEach(function(c){c.classList.remove('active');});
+  document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('active');});
+  G('tab-'+name).classList.add('active');
+  if(el)el.classList.add('active');
+  if(name==='inventory')rendInv();
+  if(name==='invoices')rendInvoices();
+  if(name==='customers'){buildCustSelect();rendCustList();}
+  if(name==='recipe')rendIngMasterList();
+  if(name==='templates'){rendTplList();rendFrostingLib();}
+  if(name==='financials')rendFin();
+}
+
+// ═══════════ CUSTOMERS ═══════════
+function buildCustSelect(){
+  var sel=G('o-cust-sel');if(!sel)return;
+  sel.innerHTML='<option value="">-- Choose customer --</option>';
+  S.customers.forEach(function(c){
+    var o=document.createElement('option');o.value=c.id;o.textContent=c.name+(c.phone?' ('+c.phone+')':'');
+    sel.appendChild(o);
+  });
+}
+function pickCustomer(){
+  var id=GV('o-cust-sel');
+  if(!id){G('o-cust-details').style.display='none';G('o-cust-name').value='';return;}
+  var c=S.customers.find(function(x){return x.id==id;});
+  if(!c)return;
+  G('o-cust-name').value=c.name;
+  var det=G('o-cust-details');
+  var parts=[];
+  if(c.phone)parts.push('&#x1F4DE; '+c.phone);
+  if(c.addr)parts.push('&#x1F4CD; '+c.addr);
+  if(c.notes)parts.push('&#x1F4DD; '+c.notes);
+  if(parts.length){det.innerHTML=parts.join('&nbsp;&nbsp;|&nbsp;&nbsp;');det.style.display='block';}
+  else det.style.display='none';
+  updPreview();
+}
+function openCustModal(id){
+  editCustId=id||null;
+  G('cust-modal-title').textContent=id?'Edit Customer':'Add Customer';
+  if(id){
+    var c=S.customers.find(function(x){return x.id==id;});
+    if(c){G('cm-name').value=c.name||'';G('cm-phone').value=c.phone||'';G('cm-addr').value=c.addr||'';G('cm-email').value=c.email||'';G('cm-notes').value=c.notes||'';}
+  } else {['cm-name','cm-phone','cm-addr','cm-email','cm-notes'].forEach(function(f){G(f).value='';});}
+  G('cust-modal').classList.add('open');
+}
+function saveCust(){
+  var name=GV('cm-name').trim();if(!name){toast('Enter customer name');return;}
+  var c={id:editCustId||('c'+Date.now()),name:name,phone:GV('cm-phone'),addr:GV('cm-addr'),email:GV('cm-email'),notes:GV('cm-notes')};
+  if(editCustId){var i=S.customers.findIndex(function(x){return x.id==editCustId;});if(i>=0)S.customers[i]=c;}
+  else S.customers.push(c);
+  saveState();buildCustSelect();rendCustList();closeModal('cust-modal');toast('Customer saved!');
+}
+function delCust(id){
+  if(!confirm('Remove this customer?'))return;
+  S.customers=S.customers.filter(function(c){return c.id!==id;});
+  saveState();buildCustSelect();rendCustList();toast('Removed');
+}
+function rendCustList(){
+  var el=G('cust-list');if(!el)return;
+  if(!S.customers.length){el.innerHTML='<div class="empty"><div class="empty-ico">&#x1F464;</div><p>No customers yet</p></div>';return;}
+  el.innerHTML=S.customers.map(function(c){
+    var orders=S.orders.filter(function(o){return o.custId===c.id;}).length;
+    return'<div class="cust-card"><div class="cust-info">'
+      +'<div class="cust-name">'+c.name+'</div>'
+      +'<div class="cust-det">'
+      +(c.phone?'&#x1F4DE; '+c.phone+'&nbsp;&nbsp;':'')
+      +(c.addr?'&#x1F4CD; '+c.addr+'&nbsp;&nbsp;':'')
+      +(orders?'<span style="color:var(--plum);font-weight:700;">'+orders+' order'+(orders>1?'s':'')+'</span>':'')
+      +'</div>'
+      +(c.notes?'<div class="tsm" style="margin-top:3px;">'+c.notes+'</div>':'')
+      +'</div>'
+      +'<div class="flex-g">'
+      +'<button class="btn bo bsm" onclick="openCustModal(\''+c.id+'\')">Edit</button>'
+      +'<button class="btn bd bsm" onclick="delCust(\''+c.id+'\')">Del</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+// ═══════════ CAKE LINES ═══════════
+function addCakeLine(){
+  cakeLineIdx++;
+  var id='cl'+cakeLineIdx;
+  var tpls=getTpls();
+  var frostings=getFrostings();
+  var tplOpts=tpls.map(function(t){return'<option value="'+t.id+'">'+t.emoji+' '+t.name+'</option>';}).join('');
+  var frostOpts=frostings.map(function(f){return'<option value="'+f.id+'">'+f.name+(f.price>0?' (+GHS '+f.price+')':'')+'</option>';}).join('');
+  var div=document.createElement('div');
+  div.className='cake-line';div.id=id;
+  div.innerHTML='<div class="cake-line-hdr"><span class="cake-line-num">Cake #'+cakeLineIdx+'</span>'
+    +'<button class="xbtn" onclick="rmCakeLine(\''+id+'\')">&#215;</button></div>'
+    +'<div class="fg3">'
+    +'<div class="fr"><label>Cake Type</label><select id="'+id+'-type" onchange="updPreview()"><option value="">-- Select cake --</option>'+tplOpts+'</select></div>'
+    +'<div class="fr"><label>Size</label><select id="'+id+'-size" onchange="updPreview()"><option value="S">Small</option><option value="M" selected>Medium</option><option value="L">Large</option></select></div>'
+    +'<div class="fr"><label>Qty</label><input type="number" id="'+id+'-qty" value="1" min="1" oninput="updPreview()"></div>'
+    +'</div>'
+    +'<div class="fg2">'
+    +'<div class="fr"><label>Frosting</label><select id="'+id+'-frost" onchange="updPreview()">'+frostOpts+'</select></div>'
+    +'<div class="fr"><label>Custom Notes for this Cake</label><input type="text" id="'+id+'-note" placeholder="e.g. Double chocolate layers" oninput="updPreview()"></div>'
+    +'</div>';
+  G('cake-lines').appendChild(div);
+  updPreview();
+}
+function rmCakeLine(id){var el=G(id);if(el)el.remove();updPreview();}
+// loadTplForLine: no longer auto-populates ingredients — user picks manually
+function loadTplForLine(lineId){
+  updPreview();
+}
+
+// ═══════════ INGREDIENT PICKER ═══════════
+function openIngPicker(){
+  G('ing-picker-search').value='';
+  buildIngPickerList('');
+  G('ing-picker-modal').classList.add('open');
+}
+function filterIngPicker(){
+  buildIngPickerList(GV('ing-picker-search').toLowerCase());
+}
+function buildIngPickerList(q){
+  var master=getIngMaster();
+  var filtered=q?master.filter(function(m){return m.name.toLowerCase().includes(q);}):master;
+  var el=G('ing-picker-list');
+  if(!filtered.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">&#x1F50D;</div><p>No ingredients match</p></div>';
+    return;
+  }
+  el.innerHTML=filtered.map(function(ing){
+    var unitLabel=ing.unit==='g'?'per g':ing.unit==='mL'?'per mL':'per '+ing.unit;
+    return'<div class="ing-pick-item" id="pick-'+ing.id+'">'
+      +'<input type="checkbox" class="ing-pick-cb" id="chk-'+ing.id+'" onchange="togglePickItem(\''+ing.id+'\')">'
+      +'<div><div class="ing-pick-name">'+ing.name+'</div>'
+      +'<div class="ing-pick-meta">GHS '+ing.cost.toFixed(3)+' '+unitLabel+(ing.notes?' · '+ing.notes:'')+'</div></div>'
+      +'<input type="number" class="ing-pick-qty" id="qty-'+ing.id+'" value="1" min="0.01" step="0.01" placeholder="qty" title="Quantity in '+ing.unit+'" onclick="event.stopPropagation()">'
+      +'</div>';
+  }).join('');
+}
+function togglePickItem(ingId){
+  var row=G('pick-'+ingId);
+  var chk=G('chk-'+ingId);
+  if(row)row.style.background=chk&&chk.checked?'var(--gold-pale)':'';
+}
+function confirmIngPicker(){
+  var master=getIngMaster();
+  var added=0;
+  master.forEach(function(ing){
+    var chk=G('chk-'+ing.id);
+    if(!chk||!chk.checked)return;
+    var qtyInput=G('qty-'+ing.id);
+    var qty=parseFloat(qtyInput?qtyInput.value:1)||1;
+    var total=qty*ing.cost;
+    ingIdx++;
+    var id='ing'+ingIdx;
+    var div=document.createElement('div');div.className='ir';div.id=id;
+    div.innerHTML='<input type="text" value="'+ing.name+'" oninput="updPreview()">'
+      +'<input type="text" value="'+qty+'" placeholder="qty" oninput="recalcIngTotal(\''+id+'\');updPreview()">'
+      +'<input type="number" value="'+ing.cost.toFixed(3)+'" placeholder="unit cost" min="0" step="0.001" oninput="recalcIngTotal(\''+id+'\');updPreview()">'
+      +'<input type="number" value="'+total.toFixed(2)+'" placeholder="total" min="0" step="0.01" id="'+id+'-total" oninput="updPreview()">'
+      +'<button class="xbtn" onclick="rmIng(\''+id+'\')">&#215;</button>';
+    G('ing-list').appendChild(div);
+    added++;
+  });
+  closeModal('ing-picker-modal');
+  updPreview();
+  if(added)toast(added+' ingredient'+(added>1?'s':'')+' added!');
+  else toast('No ingredients selected');
+}
+function getCakeLines(){
+  var lines=[];
+  document.querySelectorAll('.cake-line').forEach(function(el){
+    var id=el.id;
+    var typeEl=G(id+'-type');
+    var tId=typeEl?typeEl.value:'';
+    var tpl=getTpls().find(function(t){return t.id===tId;});
+    // Get the display name from the selected option text (strips emoji)
+    var typeName='Custom';
+    if(tpl){
+      typeName=tpl.name;
+    } else if(typeEl&&typeEl.selectedIndex>0){
+      // fallback: use option text, strip leading emoji character
+      var optText=typeEl.options[typeEl.selectedIndex].text||'';
+      typeName=optText.replace(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\s]+/u,'').trim()||'Custom';
+    }
+    var frostEl=G(id+'-frost');
+    var fId=frostEl?frostEl.value:'';
+    var frost=getFrostings().find(function(f){return f.id===fId;});
+    var sizeKey=GV(id+'-size')||'M';
+    var sizeLabel={S:'Small',M:'Medium',L:'Large'}[sizeKey]||sizeKey;
+    lines.push({
+      type:typeName,
+      size:sizeLabel,
+      qty:parseInt(GV(id+'-qty'))||1,
+      frosting:frost?frost.name:'—',
+      frostingPrice:frost?frost.price:0,
+      note:GV(id+'-note')
+    });
+  });
+  return lines;
+}
+
+// ═══════════ INGREDIENTS ═══════════
+function addIng(){
+  ingIdx++;
+  var id='ing'+ingIdx;
+  var div=document.createElement('div');div.className='ir';div.id=id;
+  div.innerHTML='<input type="text" placeholder="Ingredient" oninput="updPreview()">'
+    +'<input type="text" placeholder="qty" oninput="recalcIngTotal(\''+id+'\');updPreview()">'
+    +'<input type="number" placeholder="unit cost" min="0" step="0.01" oninput="recalcIngTotal(\''+id+'\');updPreview()">'
+    +'<input type="number" placeholder="total" min="0" step="0.01" id="'+id+'-total" oninput="updPreview()">'
+    +'<button class="xbtn" onclick="rmIng(\''+id+'\')">&#215;</button>';
+  G('ing-list').appendChild(div);
+}
+function recalcIngTotal(id){
+  var row=G(id);if(!row)return;
+  var ins=row.querySelectorAll('input');
+  var qtyStr=ins[1].value||'0';
+  var qty=parseFloat(qtyStr)||0; // handles "250g" → 250, "2 cups" → 2
+  var unit=parseFloat(ins[2].value)||0;
+  var total=qty*unit;
+  var tot=G(id+'-total');
+  if(tot&&(qty||unit))tot.value=total.toFixed(2);
+}
+function rmIng(id){var el=G(id);if(el)el.remove();updPreview();}
+function getIngs(){
+  var rows=document.querySelectorAll('#ing-list .ir'),out=[];
+  rows.forEach(function(r){
+    var ins=r.querySelectorAll('input');
+    var name=ins[0].value.trim();
+    var qty=ins[1].value.trim();
+    var unitCost=parseFloat(ins[2].value)||0;
+    var total=parseFloat(ins[3].value)||0;
+    if(name||total>0)out.push({name:name||'Item',qty:qty,unitCost:unitCost,cost:total});
+  });
+  return out;
+}
+function getIngTotal(){return getIngs().reduce(function(s,i){return s+i.cost;},0);}
+
+// ═══════════ DELIVERY ═══════════
+function setDel(mode){
+  delMode=mode;
+  ['pickup','free','paid'].forEach(function(m){G('dopt-'+m).classList.toggle('sel',m===mode);});
+  G('del-fee-row').style.display=(mode==='paid'?'block':'none');
+  if(mode!=='paid')G('o-delfee').value='0';
+  updPreview();
+}
+
+// ═══════════ PRICE CALC ═══════════
+function calcTotals(){
+  var ings=getIngs();
+  var ingTot=ings.reduce(function(s,i){return s+i.cost;},0);
+  var cakeLines=getCakeLines();
+
+  // Frosting cost: sum of (frostingPrice × qty) across all cake lines
+  var frostTot=cakeLines.reduce(function(s,l){return s+l.frostingPrice*l.qty;},0);
+
+  // Total quantity ordered (for splitting on invoice)
+  var totalQty=cakeLines.reduce(function(s,l){return s+l.qty;},0)||1;
+
+  var labour=GF('o-labour');
+  var pp=GF('o-profit');
+  var disc=GF('o-disc');
+  var delfee=(delMode==='paid')?GF('o-delfee'):0;
+
+  // Base = ingredients + frosting
+  var base=ingTot+frostTot;
+  // Add labour
+  var withLabour=base+labour;
+  // Add profit margin on top
+  var profit=withLabour*(pp/100);
+  // Grand total
+  var total=withLabour+profit+delfee-disc;
+
+  // Per-unit price (total before delivery/discount, split by qty)
+  var pricePerUnit=totalQty>0?(withLabour+profit)/totalQty:0;
+
+  return{
+    ings:ings,
+    ingTot:ingTot,
+    cakeLines:cakeLines,
+    frostTot:frostTot,
+    totalQty:totalQty,
+    labour:labour,
+    pp:pp,
+    disc:disc,
+    delfee:delfee,
+    base:base,
+    withLabour:withLabour,
+    profit:profit,
+    total:total,
+    pricePerUnit:pricePerUnit
+  };
+}
+
+// ═══════════ PRINT CSS ═══════════
+var PRINT_CSS="body{font-family:Georgia,serif;margin:22px;color:#1A1A1A;max-width:640px;}"
+  +".inv-hdr{background:#3B0F35;color:white;padding:20px;text-align:center;border-radius:8px 8px 0 0;}"
+  +".inv-hdr-name{font-size:24px;font-weight:900;letter-spacing:2px;font-style:italic;}"
+  +".inv-hdr-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.75;margin-top:3px;}"
+  +".inv-hdr-contact{font-size:11px;opacity:.7;margin-top:5px;}"
+  +".inv-div{height:2px;background:linear-gradient(90deg,transparent,#E8C84A,transparent);}"
+  +".inv-body{padding:16px;border:1px solid #DFD0C0;border-top:none;border-radius:0 0 8px 8px;}"
+  +".inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;font-size:12.5px;}"
+  +".inv-meta-item strong{color:#3B0F35;font-size:10px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px;}"
+  +".inv-tbl{width:100%;border-collapse:collapse;font-size:13px;}"
+  +".inv-tbl th{background:#F2E8D8;color:#3B0F35;font-weight:800;padding:7px 9px;text-align:left;font-size:10px;text-transform:uppercase;}"
+  +".inv-tbl td{padding:9px;border-bottom:1px solid #DFD0C0;}"
+  +".trow{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px dashed #DFD0C0;}"
+  +".trow.final{font-size:16px;font-weight:900;color:#3B0F35;border-top:2px solid #3B0F35;margin-top:7px;padding-top:10px;}"
+  +".inv-note{margin-top:9px;font-size:12px;color:#5A5A5A;background:#F2E8D8;padding:7px 11px;border-left:3px solid #C98A8E;}"
+  +".inv-ftr{background:#FDF2CA;border-top:1px solid #E8D8A0;padding:11px;text-align:center;font-size:11.5px;color:#3B0F35;font-weight:600;font-style:italic;}"
+  +"[style*='background:#d4edda']{background:#d4edda!important;}"
+  +"[style*='background:var(--gold-pale)'],[style*='background:#FDF2CA']{background:#FDF2CA!important;}"
+  +"[style*='color:var(--ok)']{color:#2E7D52!important;}"
+  +"[style*='color:var(--gold)']{color:#B8860B!important;}"
+  +"[style*='color:var(--plum)']{color:#3B0F35!important;}"
+  +"[style*='color:var(--soft)']{color:#5A5A5A!important;}"
+  +"[style*='border-left:3px solid var(--ok)']{border-left:3px solid #2E7D52!important;}"
+  +"[style*='border-left:3px solid var(--gold)']{border-left:3px solid #B8860B!important;}"
+  +"[style*='white-space:pre-line']{white-space:pre-line!important;}";
+
+// ═══════════ BUILD PROFORMA ═══════════
+function buildProforma(d,num){
+  var sett=S.settings;
+  var delLabel=delMode==='pickup'?'Pick Up':delMode==='free'?'Free Delivery':'Delivery';
+  var ppu=d.pricePerUnit||0;
+  // cake table rows - price per cake = pricePerUnit × qty
+  var cRows=d.cakeLines.map(function(l){
+    var unitP=ppu;
+    var lineTotal=(unitP*l.qty).toFixed(2);
+    var desc=l.type+(l.size?' ('+l.size+')':'')+(l.frosting&&l.frosting!=='—'?' — '+l.frosting:'');
+    return'<tr><td>'+desc+(l.note?'<div style="font-size:11px;color:#5A5A5A;">'+l.note+'</div>':'')+'</td>'
+      +'<td style="text-align:center;">'+l.qty+'</td>'
+      +'<td style="text-align:right;">GHS '+unitP.toFixed(2)+'</td>'
+      +'<td style="text-align:right;font-weight:700;">GHS '+lineTotal+'</td></tr>';
+  }).join('');
+  if(!cRows)cRows='<tr><td colspan="4" style="color:#aaa;text-align:center;padding:12px;">No cakes added</td></tr>';
+  return'<div class="inv-hdr">'
+    +'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.6;margin-bottom:5px;">Proforma Invoice</div>'
+    +'<div class="inv-hdr-name">'+(sett.name||'Whisked by Vee')+'</div>'
+    +'<div class="inv-hdr-tag">'+(sett.tag||'Artisan Bake House')+'</div>'
+    +'<div class="inv-hdr-contact">'+(sett.phone||'')+(sett.phone&&sett.email?' &middot; ':'')+(sett.email||'')+(sett.loc?'<br>'+sett.loc:'')+'</div>'
+    +'</div><div class="inv-div"></div><div class="inv-body">'
+    +'<div style="background:#FDF2CA;border:1px solid #E8D8A0;border-radius:8px;padding:9px 13px;margin-bottom:12px;display:flex;align-items:center;gap:9px;">'
+    +'<span style="font-size:18px;">&#x23F3;</span>'
+    +'<div><div style="font-weight:800;font-size:12.5px;color:#B8860B;">PROFORMA — AWAITING PAYMENT</div>'
+    +'<div style="font-size:11px;color:#5A5A5A;">Please pay to secure your order slot.</div></div></div>'
+    +'<div class="inv-meta">'
+    +'<div class="inv-meta-item"><strong>Prepared For</strong>'+d.cust+'</div>'
+    +'<div class="inv-meta-item" style="text-align:right;"><strong>Invoice No.</strong>'+num+'<br><strong style="font-size:10px;text-transform:uppercase;letter-spacing:.4px;">Date</strong> '+fmtDate(d.date)+'</div>'
+    +(d.deldate?'<div class="inv-meta-item"><strong>'+(delMode==='pickup'?'Collection':'Delivery')+' Date</strong>'+fmtDate(d.deldate)+'</div><div></div>':'')
+    +'</div>'
+    +'<table class="inv-tbl"><thead><tr><th>Cake</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Total</th></tr></thead>'
+    +'<tbody>'+cRows+'</tbody></table>'
+    +'<div style="margin-top:9px;">'
+    +(delMode==='paid'&&d.delfee>0?'<div class="trow"><span>Delivery Fee</span><span>GHS '+d.delfee.toFixed(2)+'</span></div>':'')
+    +(delMode==='free'?'<div class="trow"><span>Delivery</span><span style="color:#2E7D52;">FREE</span></div>':'')
+    +(d.disc>0?'<div class="trow"><span>Discount</span><span style="color:#2E7D52;">- GHS '+d.disc.toFixed(2)+'</span></div>':'')
+    +'<div class="trow final"><span>BALANCE DUE</span><span>GHS '+d.total.toFixed(2)+'</span></div>'
+    +'</div>'
+    +(d.notes?'<div class="inv-note">'+d.notes+'</div>':'')
+    +'<div style="margin-top:12px;background:#F2E8D8;border-radius:8px;padding:11px 13px;border-left:3px solid #B8860B;">'
+    +'<div style="font-size:11px;font-weight:800;color:#3B0F35;margin-bottom:3px;">PAYMENT INFORMATION</div>'
+    +(sett.paymentInfo?'<div style="font-size:12px;color:#1A1A1A;white-space:pre-line;">'+sett.paymentInfo+'</div>'
+      :'<div style="font-size:11px;color:#5A5A5A;">Contact us for payment details.</div>')
+    +'</div>'
+    +'</div>'
+    +'<div class="inv-ftr">This is a proforma. Official receipt issued on full payment.</div>';
+}
+
+// ═══════════ BUILD RECEIPT ═══════════
+function buildReceipt(d,num){
+  var sett=S.settings;
+  var payDate=d.payDate||d.date;
+  var ppu=d.pricePerUnit||0;
+  var cRows=d.cakeLines.map(function(l){
+    var unitP=ppu;
+    var lineTotal=(unitP*l.qty).toFixed(2);
+    var desc=l.type+(l.size?' ('+l.size+')':'')+(l.frosting&&l.frosting!=='—'?' — '+l.frosting:'');
+    return'<tr><td>'+desc+(l.note?'<div style="font-size:11px;color:#5A5A5A;">'+l.note+'</div>':'')+'</td>'
+      +'<td style="text-align:center;">'+l.qty+'</td>'
+      +'<td style="text-align:right;">GHS '+unitP.toFixed(2)+'</td>'
+      +'<td style="text-align:right;font-weight:700;">GHS '+lineTotal+'</td></tr>';
+  }).join('');
+  if(!cRows)cRows='<tr><td colspan="4" style="color:#aaa;text-align:center;padding:12px;">—</td></tr>';
+  return'<div class="inv-hdr">'
+    +'<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.6;margin-bottom:5px;">Payment Receipt</div>'
+    +'<div class="inv-hdr-name">'+(sett.name||'Whisked by Vee')+'</div>'
+    +'<div class="inv-hdr-tag">'+(sett.tag||'Artisan Bake House')+'</div>'
+    +'<div class="inv-hdr-contact">'+(sett.phone||'')+(sett.phone&&sett.email?' &middot; ':'')+(sett.email||'')+(sett.loc?'<br>'+sett.loc:'')+'</div>'
+    +'</div><div class="inv-div"></div><div class="inv-body">'
+    +'<div style="background:#d4edda;border:1px solid #b8dfc4;border-radius:8px;padding:9px 13px;margin-bottom:12px;display:flex;align-items:center;gap:9px;">'
+    +'<span style="font-size:18px;">&#x2705;</span>'
+    +'<div><div style="font-weight:800;font-size:12.5px;color:#2E7D52;">PAYMENT RECEIVED — THANK YOU!</div>'
+    +'<div style="font-size:11px;color:#3a7a55;">Your order is confirmed and being prepared.</div></div></div>'
+    +'<div class="inv-meta">'
+    +'<div class="inv-meta-item"><strong>Received From</strong>'+d.cust+'</div>'
+    +'<div class="inv-meta-item" style="text-align:right;"><strong>Receipt No.</strong>'+num+'<br><strong style="font-size:10px;text-transform:uppercase;letter-spacing:.4px;">Payment Date</strong> '+fmtDate(payDate)+'</div>'
+    +(d.deldate?'<div class="inv-meta-item"><strong>'+(delMode==='pickup'?'Collection':'Delivery')+' Date</strong>'+fmtDate(d.deldate)+'</div><div></div>':'')
+    +'</div>'
+    +'<table class="inv-tbl"><thead><tr><th>Cake</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Total</th></tr></thead>'
+    +'<tbody>'+cRows+'</tbody></table>'
+    +'<div style="margin-top:9px;">'
+    +(delMode==='paid'&&d.delfee>0?'<div class="trow"><span>Delivery Fee</span><span>GHS '+d.delfee.toFixed(2)+'</span></div>':'')
+    +(delMode==='free'?'<div class="trow"><span>Delivery</span><span style="color:#2E7D52;">FREE</span></div>':'')
+    +(d.disc>0?'<div class="trow"><span>Discount</span><span style="color:#2E7D52;">- GHS '+d.disc.toFixed(2)+'</span></div>':'')
+    +'<div class="trow final"><span>TOTAL PAID</span><span>GHS '+d.total.toFixed(2)+'</span></div>'
+    +'</div>'
+    +(d.notes?'<div class="inv-note">'+d.notes+'</div>':'')
+    +'</div>'
+    +'<div class="inv-ftr">'+(sett.footer||'Thank you for choosing Whisked by Vee. Every slice tells a story.')+'</div>';
+}
+
+// ═══════════ UPDATE PREVIEW ═══════════
+function updPreview(){
+  var calc=calcTotals();
+  var sett=S.settings;
+  var previewP='WBV-P-'+String(sett.nextP||1).padStart(4,'0');
+  var previewR='WBV-R-'+String(sett.nextR||1).padStart(4,'0');
+  var d={
+    cust:GV('o-cust-name')||'Customer',
+    date:GV('o-date')||todayStr(),
+    deldate:GV('o-deldate'),
+    notes:GV('o-notes'),
+    payDate:'',
+    cakeLines:calc.cakeLines,
+    delfee:calc.delfee,disc:calc.disc,total:calc.total,
+    pricePerUnit:calc.pricePerUnit,
+    totalQty:calc.totalQty
+  };
+  proformaHTML=buildProforma(d,previewP);
+  receiptHTML=buildReceipt(d,previewR);
+  // Breakdown
+  var b='<div class="bkdn"><div class="bkdn-title">Private Cost Breakdown</div>';
+  if(calc.ings.length){
+    calc.ings.forEach(function(i){b+='<div class="brow"><span>'+i.name+(i.qty?' ('+i.qty+')':'')+'</span><span>GHS '+i.cost.toFixed(2)+'</span></div>';});
+    b+='<div class="brow" style="border-top:1px solid var(--border);margin-top:5px;padding-top:5px;"><span>Ingredients Total</span><span>GHS '+calc.ingTot.toFixed(2)+'</span></div>';
+  } else {
+    b+='<div class="brow"><span style="color:var(--soft);">No ingredients added yet</span><span>GHS 0.00</span></div>';
+  }
+  if(calc.frostTot>0)b+='<div class="brow"><span>Frosting Cost</span><span>GHS '+calc.frostTot.toFixed(2)+'</span></div>';
+  b+='<div class="brow"><span>Base (Ing + Frosting)</span><span>GHS '+calc.base.toFixed(2)+'</span></div>';
+  b+='<div class="brow"><span>Labour (fixed)</span><span>GHS '+calc.labour.toFixed(2)+'</span></div>';
+  b+='<div class="brow"><span>Profit ('+calc.pp+'%)</span><span>GHS '+calc.profit.toFixed(2)+'</span></div>';
+  if(calc.totalQty>0)b+='<div class="brow" style="color:var(--plum-mid);"><span>Price per Cake (÷ '+calc.totalQty+' cake'+(calc.totalQty>1?'s':'')+')</span><span>GHS '+calc.pricePerUnit.toFixed(2)+'</span></div>';
+  if(calc.delfee>0)b+='<div class="brow"><span>Delivery Fee</span><span>GHS '+calc.delfee.toFixed(2)+'</span></div>';
+  if(calc.disc>0)b+='<div class="brow"><span>Discount</span><span style="color:var(--ok);">- GHS '+calc.disc.toFixed(2)+'</span></div>';
+  b+='<div class="brow"><span>TOTAL TO CHARGE CUSTOMER</span><span>GHS '+calc.total.toFixed(2)+'</span></div></div>';
+  G('bkdn-box').innerHTML=b;
+  G('inv-preview').innerHTML=activePreview==='proforma'?proformaHTML:receiptHTML;
+}
+function switchPreview(type){
+  activePreview=type;
+  G('rpv-proforma').classList.toggle('active',type==='proforma');
+  G('rpv-receipt').classList.toggle('active',type==='receipt');
+  G('inv-preview').innerHTML=type==='proforma'?proformaHTML:receiptHTML;
+}
+
+// ═══════════ SAVE / CLEAR ORDER ═══════════
+function saveOrder(){
+  var cust=GV('o-cust-name').trim();
+  if(!cust){toast('Enter customer name');return;}
+  var calc=calcTotals();
+  var sett=S.settings;
+  var pNo='WBV-P-'+String(sett.nextP||1).padStart(4,'0');
+  var rNo='WBV-R-'+String(sett.nextR||1).padStart(4,'0');
+  var d={
+    cust:cust,date:GV('o-date')||todayStr(),deldate:GV('o-deldate'),
+    notes:GV('o-notes'),payDate:'',
+    cakeLines:calc.cakeLines,delfee:calc.delfee,disc:calc.disc,total:calc.total,
+    pricePerUnit:calc.pricePerUnit,
+    totalQty:calc.totalQty
+  };
+  var finalP=buildProforma(d,pNo);
+  var finalR=buildReceipt(d,rNo);
+  sett.nextP=(sett.nextP||1)+1;
+  sett.nextR=(sett.nextR||1)+1;
+  var nc=G('s-next-p');if(nc)nc.value=sett.nextP;
+  var nr=G('s-next-r');if(nr)nr.value=sett.nextR;
+  var custId=GV('o-cust-sel')||null;
+  S.orders.unshift({
+    id:Date.now(),custId:custId,customer:cust,
+    date:d.date,deldate:d.deldate,notes:d.notes,
+    cakeLines:calc.cakeLines,
+    delMode:delMode,delfee:calc.delfee,
+    ingTot:calc.ingTot,labour:calc.labour,profit:calc.profit,
+    disc:calc.disc,total:calc.total,
+    pricePerUnit:calc.pricePerUnit,
+    totalQty:calc.totalQty,
+    proformaNo:pNo,receiptNo:rNo,
+    proformaHTML:finalP,receiptHTML:finalR,
+    payStatus:'unpaid',payMethod:'',payDate:'',
+    savedAt:new Date().toISOString()
+  });
+  proformaHTML=finalP;receiptHTML=finalR;
+  G('inv-preview').innerHTML=activePreview==='proforma'?proformaHTML:receiptHTML;
+  saveState();rendInvoices();
+  toast('Order saved! — '+pNo);
+}
+function clearOrder(){
+  G('cake-lines').innerHTML='';cakeLineIdx=0;
+  G('ing-list').innerHTML='';ingIdx=0;
+  G('o-cust-sel').value='';G('o-cust-name').value='';
+  G('o-cust-details').style.display='none';
+  G('o-date').value=todayStr();G('o-deldate').value='';G('o-notes').value='';
+  G('o-disc').value='0';G('o-delfee').value='0';
+  G('o-labour').value=S.settings.defaultLabour||50;
+  G('o-profit').value=S.settings.defaultProfit||25;
+  setDel('pickup');
+  addCakeLine();
+  activePreview='proforma';
+  switchPreview('proforma');
+  updPreview();
+}
+
+// ═══════════ PRINT / SHARE ═══════════
+function printDoc(type){
+  var html=type==='proforma'?proformaHTML:receiptHTML;
+  var title=type==='proforma'?'Proforma Invoice':'Payment Receipt';
+  try{
+    var w=window.open('','_blank','width=720,height=960');
+    if(!w){toast('Allow popups to print');return;}
+    w.document.open();
+    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+title+' - '+(S.settings.name||'Whisked by Vee')+'</title><style>'+PRINT_CSS+'</style></head><body>'+html+'<script>window.onload=function(){window.print();}<\/script></body></html>');
+    w.document.close();
+  }catch(e){toast('Could not open print window');}
+}
+function buildWAMsg(cust,date,cakeLines,notes,total,paymentInfo,footer,name,pricePerUnit){
+  var ppu=pricePerUnit||0;
+  var lines=(cakeLines||[]).map(function(l,i){
+    var desc=l.type+(l.size?' ('+l.size+')':'')+(l.frosting&&l.frosting!=='—'?' + '+l.frosting:'');
+    var amt=ppu>0?' — GHS '+(ppu*l.qty).toFixed(2):'';
+    return (i+1)+'. '+desc+' x'+l.qty+amt;
+  }).join('\n');
+  return '*'+(name||'Whisked by Vee')+'*\n_Proforma Invoice_\n\n'
+    +'*Customer:* '+cust+'\n'
+    +'*Date:* '+fmtDate(date)+'\n\n'
+    +'*Order:*\n'+(lines||'—')+'\n\n'
+    +(notes?'*Notes:* '+notes+'\n\n':'')
+    +'*TOTAL DUE: GHS '+total.toFixed(2)+'*\n\n'
+    +(paymentInfo?'*Payment:*\n'+paymentInfo+'\n\n':'')
+    +'_'+(footer||'Thank you for choosing Whisked by Vee.')+'_';
+}
+function shareWhatsApp(){
+  var sett=S.settings;
+  var calc=calcTotals();
+  var msg=buildWAMsg(
+    GV('o-cust-name')||'Customer',
+    GV('o-date')||todayStr(),
+    calc.cakeLines,
+    GV('o-notes'),
+    calc.total,
+    sett.paymentInfo,
+    sett.footer,
+    sett.name,
+    calc.pricePerUnit
+  );
+  var url='https://wa.me/?text='+encodeURIComponent(msg);
+  window.location.href=url;
+}
+function shareModalWhatsApp(){
+  var o=S.orders.find(function(x){return x.id===modalOrderId;});
+  if(!o)return;
+  var sett=S.settings;
+  var msg=buildWAMsg(
+    o.customer,
+    o.date,
+    o.cakeLines,
+    o.notes,
+    o.total,
+    sett.paymentInfo,
+    sett.footer,
+    sett.name,
+    o.pricePerUnit
+  );
+  var url='https://wa.me/?text='+encodeURIComponent(msg);
+  window.location.href=url;
+}
+var modalProformaHTML='',modalReceiptHTML='';
+function switchModalPreview(type){
+  G('mod-rpv-p').classList.toggle('active',type==='proforma');
+  G('mod-rpv-r').classList.toggle('active',type==='receipt');
+  G('ord-modal-body').innerHTML='<div class="inv-box">'+(type==='proforma'?modalProformaHTML:modalReceiptHTML)+'</div>';
+}
+function printFromModal(type){
+  var html=type==='proforma'?modalProformaHTML:modalReceiptHTML;
+  var title=type==='proforma'?'Proforma Invoice':'Payment Receipt';
+  try{
+    var w=window.open('','_blank','width=720,height=960');
+    if(!w){toast('Allow popups to print');return;}
+    w.document.open();
+    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+title+'</title><style>'+PRINT_CSS+'</style></head><body>'+html+'<script>window.onload=function(){window.print();}<\/script></body></html>');
+    w.document.close();
+  }catch(e){toast('Could not open print window');}
+}
+
+// ═══════════ INVOICES TAB ═══════════
+function setInvFilter(f,el){
+  invFilter=f;
+  document.querySelectorAll('.stf').forEach(function(b){b.classList.remove('active');});
+  if(el)el.classList.add('active');
+  rendInvoices();
+}
+function rendInvoices(){
+  var all=S.orders;
+  var q=(GV('inv-search')||'').toLowerCase();
+  var filtered=all.filter(function(o){
+    var matchQ=!q||(o.customer||'').toLowerCase().includes(q)||(o.proformaNo||'').toLowerCase().includes(q);
+    if(!matchQ)return false;
+    if(invFilter==='all')return true;
+    return o.payStatus===invFilter;
+  });
+  var rev=all.reduce(function(s,o){return s+o.total;},0);
+  var unpaidN=all.filter(function(o){return o.payStatus==='unpaid';}).length;
+  G('is-total').textContent=all.length;
+  G('is-rev').textContent=rev.toFixed(0);
+  G('is-unpaid').textContent=unpaidN;
+  var el=G('inv-list-orders');
+  if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-ico">&#x1F4CB;</div><p>No orders found</p></div>';return;}
+  var stMap={unpaid:'<span class="st-badge st-unpaid">Unpaid</span>',sent:'<span class="st-badge st-sent">Sent</span>',paid:'<span class="st-badge st-paid">Paid</span>',overdue:'<span class="st-badge st-overdue">Overdue</span>'};
+  el.innerHTML=filtered.map(function(o){
+    var cakeDesc=(o.cakeLines||[]).map(function(l){return l.type+(l.size?' ('+l.size+')':'');}).join(', ')||o.notes||'Order';
+    return'<div class="ocard"><div class="ohdr"><div>'
+      +'<div class="oname">'+o.customer+' '+( stMap[o.payStatus]||'')+'</div>'
+      +'<div class="odet">'+cakeDesc+'</div>'
+      +'<div class="tsm" style="margin-top:3px;">'+fmtDate(o.date)+(o.deldate?' &rarr; '+fmtDate(o.deldate):'')+'</div>'
+      +(o.proformaNo?'<div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">'
+        +'<span style="font-size:10px;background:#FDF2CA;color:#B8860B;font-weight:700;padding:2px 7px;border-radius:20px;">'+o.proformaNo+'</span>'
+        +'<span style="font-size:10px;background:#d4edda;color:#2E7D52;font-weight:700;padding:2px 7px;border-radius:20px;">'+o.receiptNo+'</span>'
+        +'</div>':'')
+      +'</div><div class="oamt">GHS '+o.total.toFixed(2)+'</div></div>'
+      +'<div class="oact">'
+      +'<button class="btn bo bsm" onclick="viewOrder('+o.id+')">View</button>'
+      +'<button class="btn bg bsm" onclick="printOrder('+o.id+',\'proforma\')">&#x1F5A8; Proforma</button>'
+      +'<button class="btn bgreen bsm" onclick="printOrder('+o.id+',\'receipt\')">&#x2705; Receipt</button>'
+      +'<button class="btn" style="background:#25D366;color:#fff;font-size:11px;padding:5px 9px;" onclick="shareOrder('+o.id+')">&#x1F4F2;</button>'
+      +'<button class="btn bd bsm" onclick="delOrder('+o.id+')">Del</button>'
+      +'</div></div>';
+  }).join('');
+}
+function viewOrder(id){
+  var o=S.orders.find(function(x){return x.id===id;});if(!o)return;
+  modalOrderId=id;
+  modalProformaHTML=o.proformaHTML||'';
+  modalReceiptHTML=o.receiptHTML||'';
+  G('mod-rpv-p').classList.add('active');G('mod-rpv-r').classList.remove('active');
+  G('ord-modal-body').innerHTML='<div class="inv-box">'+modalProformaHTML+'</div>';
+  // status buttons
+  var statuses=['unpaid','sent','paid','overdue'];
+  var labels={unpaid:'Mark Unpaid',sent:'Mark Sent',paid:'Mark Paid',overdue:'Mark Overdue'};
+  var colors={unpaid:'var(--bad)',sent:'var(--warn)',paid:'var(--ok)',overdue:'var(--plum)'};
+  G('ord-status-btns').innerHTML=statuses.map(function(s){
+    var active=o.payStatus===s;
+    var bg=s==='paid'?'var(--ok)':s==='sent'?'var(--warn)':s==='overdue'?'var(--plum)':'var(--bad)';
+    return'<button class="btn bsm" style="background:'+(active?bg:'var(--cream)')+';color:'+(active?'#fff':bg)+';border:2px solid '+bg+';font-size:11px;" onclick="setOrderStatus('+id+',\''+s+'\')">'+labels[s]+'</button>';
+  }).join('');
+  G('ord-modal').classList.add('open');
+}
+function setOrderStatus(id,status){
+  var o=S.orders.find(function(x){return x.id===id;});if(!o)return;
+  o.payStatus=status;
+  if(status==='paid')o.payDate=todayStr();
+  saveState();rendInvoices();
+  // refresh status buttons
+  viewOrder(id);
+  toast('Status updated: '+status.toUpperCase());
+}
+function printOrder(id,type){
+  var o=S.orders.find(function(x){return x.id===id;});if(!o)return;
+  modalProformaHTML=o.proformaHTML||'';
+  modalReceiptHTML=o.receiptHTML||'';
+  printFromModal(type);
+}
+function shareOrder(id){
+  var o=S.orders.find(function(x){return x.id===id;});if(!o)return;
+  modalOrderId=id;
+  shareModalWhatsApp();
+}
+function delOrder(id){
+  if(!confirm('Delete this order?'))return;
+  S.orders=S.orders.filter(function(o){return o.id!==id;});
+  saveState();rendInvoices();toast('Deleted');
+}
+function clearOrders(){if(!confirm('Delete ALL orders?'))return;S.orders=[];saveState();rendInvoices();toast('Cleared');}
+
+// ═══════════ INGREDIENT MASTER LIST ═══════════
+var editIngMasterId=null;
+function openIngMasterModal(id){
+  editIngMasterId=id||null;
+  G('ing-master-modal-title').textContent=id?'Edit Ingredient':'Add Ingredient';
+  if(id){
+    var ing=getIngMaster().find(function(x){return x.id===id;});
+    if(ing){G('im-name').value=ing.name||'';G('im-unit').value=ing.unit||'g';G('im-cost').value=ing.cost||0;G('im-stock').value=ing.stock||'';G('im-notes').value=ing.notes||'';}
+  } else {
+    ['im-name','im-cost','im-stock','im-notes'].forEach(function(f){G(f).value='';});
+    G('im-unit').value='g';
+  }
+  G('ing-master-modal').classList.add('open');
+}
+function saveIngMaster(){
+  var name=GV('im-name').trim();if(!name){toast('Enter ingredient name');return;}
+  // Ensure S.ingredientMaster is initialised from defaults before editing
+  if(!S.ingredientMaster||!S.ingredientMaster.length)S.ingredientMaster=JSON.parse(JSON.stringify(DEFAULT_INGREDIENT_MASTER));
+  var item={
+    id:editIngMasterId||('im'+Date.now()),
+    name:name,
+    unit:GV('im-unit'),
+    cost:parseFloat(GV('im-cost'))||0,
+    stock:parseFloat(GV('im-stock'))||0,
+    notes:GV('im-notes')
+  };
+  if(editIngMasterId){
+    var i=S.ingredientMaster.findIndex(function(x){return x.id===editIngMasterId;});
+    if(i>=0)S.ingredientMaster[i]=item;
+    else S.ingredientMaster.push(item);
+  } else {
+    S.ingredientMaster.push(item);
+  }
+  saveState();rendIngMasterList();closeModal('ing-master-modal');
+  toast(editIngMasterId?'Ingredient updated!':'Ingredient added!');
+}
+function delIngMaster(id){
+  if(!confirm('Remove this ingredient from the master list?'))return;
+  if(!S.ingredientMaster||!S.ingredientMaster.length)S.ingredientMaster=JSON.parse(JSON.stringify(DEFAULT_INGREDIENT_MASTER));
+  S.ingredientMaster=S.ingredientMaster.filter(function(x){return x.id!==id;});
+  saveState();rendIngMasterList();toast('Removed');
+}
+function rendIngMasterList(){
+  var el=G('ing-master-list');if(!el)return;
+  var list=getIngMaster();
+  if(!list.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">&#x1F9EA;</div><p>No ingredients yet</p></div>';
+    return;
+  }
+  el.innerHTML=list.map(function(ing){
+    return'<div style="display:grid;grid-template-columns:1fr 70px 90px auto;gap:6px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--border);">'
+      +'<div>'
+        +'<div style="font-weight:700;font-size:13.5px;color:var(--text);">'+ing.name+'</div>'
+        +(ing.notes?'<div style="font-size:11px;color:var(--soft);margin-top:1px;">'+ing.notes+'</div>':'')
+      +'</div>'
+      +'<div style="font-size:12px;color:var(--soft);text-align:center;">'+ing.unit+'</div>'
+      +'<div style="font-weight:800;font-size:13px;color:var(--plum);text-align:right;">GHS '+ing.cost.toFixed(3)+'<br><span style="font-size:10px;font-weight:400;color:var(--soft);">per '+ing.unit+'</span></div>'
+      +'<div style="display:flex;gap:4px;">'
+        +'<button class="btn bo bsm" onclick="openIngMasterModal(\''+ing.id+'\')" style="padding:4px 8px;">Edit</button>'
+        +'<button class="btn bd bsm" onclick="delIngMaster(\''+ing.id+'\')" style="padding:4px 8px;">Del</button>'
+      +'</div>'
+      +'</div>';
+  }).join('')
+  +'<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">'
+  +'<button class="btn bo bsm" onclick="resetIngMasterDefaults()" style="font-size:11px;">&#x21BA; Reset to Defaults</button>'
+  +'</div>';
+}
+function resetIngMasterDefaults(){
+  if(!confirm('Reset ingredient list to defaults? Your edits will be lost.'))return;
+  S.ingredientMaster=JSON.parse(JSON.stringify(DEFAULT_INGREDIENT_MASTER));
+  saveState();rendIngMasterList();toast('Reset to defaults!');
+}
+
+// ═══════════ INVENTORY ═══════════
+function openInvModal(id){
+  editInvId=id||null;
+  if(id){var it=S.inventory.find(function(i){return i.id===id;});if(it){G('m-name').value=it.name;G('m-stock').value=it.stock;G('m-unit').value=it.unit;G('m-min').value=it.min;G('m-price').value=it.price;}}
+  else{['m-name','m-stock','m-min','m-price'].forEach(function(f){G(f).value='';});}
+  G('inv-modal').classList.add('open');
+}
+function saveInvItem(){
+  var name=GV('m-name').trim();if(!name){toast('Enter item name');return;}
+  var item={id:editInvId||Date.now(),name:name,stock:parseFloat(GV('m-stock'))||0,unit:GV('m-unit'),min:parseFloat(GV('m-min'))||0,price:parseFloat(GV('m-price'))||0};
+  if(editInvId){var i=S.inventory.findIndex(function(x){return x.id===editInvId;});if(i>=0)S.inventory[i]=item;}else S.inventory.push(item);
+  saveState();rendInv();closeModal('inv-modal');toast(editInvId?'Updated!':'Added!');
+}
+function adjStock(id,d){var it=S.inventory.find(function(i){return i.id===id;});if(!it)return;it.stock=Math.max(0,it.stock+d);saveState();rendInv();}
+function delInvItem(id){S.inventory=S.inventory.filter(function(i){return i.id!==id;});saveState();rendInv();}
+function rendInv(){
+  var items=S.inventory;
+  G('inv-n').textContent=items.length;
+  G('inv-low').textContent=items.filter(function(i){return i.stock>0&&i.min>0&&i.stock<=i.min;}).length;
+  G('inv-out').textContent=items.filter(function(i){return i.stock===0;}).length;
+  var list=G('inv-list');if(!list)return;
+  if(!items.length){list.innerHTML='<div class="empty"><div class="empty-ico">&#x1F4E6;</div><p>No items</p></div>';return;}
+  list.innerHTML=items.map(function(it){
+    var pct=it.min>0?Math.min(100,(it.stock/(it.min*3))*100):(it.stock>0?60:0);
+    var st=it.stock===0?'out':(it.min>0&&it.stock<=it.min?'low':'ok');
+    var bc=st==='out'?'danger':st==='low'?'warn':'';
+    var bge=st==='out'?'<span class="badge bout">Out</span>':st==='low'?'<span class="badge blow">Low</span>':'<span class="badge bok">OK</span>';
+    return'<div class="ii"><div><div style="font-weight:700;">'+it.name+' '+bge+'</div><div class="tsm">'+it.stock+' '+it.unit+'</div><div class="sb-wrap"><div class="sb '+bc+'" style="width:'+pct+'%"></div></div></div><div style="text-align:center;"><div style="font-weight:800;">'+it.stock+'</div><div class="tsm">'+it.unit+'</div></div><div class="ii-p" style="text-align:center;font-weight:700;">GHS '+it.price.toFixed(2)+'</div><div style="display:flex;gap:3px;"><button class="btn bo bsm" onclick="adjStock('+it.id+',-1)" style="padding:4px 8px;">&#8722;</button><button class="btn bp bsm" onclick="adjStock('+it.id+',1)" style="padding:4px 8px;">+</button></div><div style="display:flex;gap:3px;"><button class="btn bo bsm" onclick="openInvModal('+it.id+')" style="padding:4px 7px;">Edit</button><button class="btn bd bsm" onclick="delInvItem('+it.id+')" style="padding:4px 7px;">Del</button></div></div>';
+  }).join('');
+}
+
+// ═══════════ TEMPLATES ═══════════
+function rendTplList(){
+  var tpls=getTpls();var el=G('tpl-list');if(!el)return;
+  el.innerHTML=tpls.map(function(t){
+    return'<div style="background:var(--cream-dk);border:1px solid var(--border);border-radius:var(--rs);padding:13px;margin-bottom:10px;">'
+      +'<div class="flex-b" style="margin-bottom:9px;"><span style="font-weight:800;color:var(--plum);font-size:14px;">'+t.emoji+' '+t.name+'</span><button class="btn bd bsm" onclick="deleteTpl(\''+t.id+'\')">Delete</button></div>'
+      +'<div style="display:flex;gap:5px;margin-bottom:9px;">'
+      +['S','M','L'].map(function(sz){return'<button class="stab" id="stab-'+t.id+'-'+sz+'" onclick="showTplSz(\''+t.id+'\',\''+sz+'\')" style="padding:5px 11px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--soft);font-family:inherit;">'+(sz==='S'?'Small':sz==='M'?'Medium':'Large')+'</button>';}).join('')
+      +'</div>'
+      +'<div id="tpl-ings-'+t.id+'">'+rendTplSzIngs(t,'S')+'</div>'
+      +'<div id="tpl-lbl-'+t.id+'" style="font-size:11px;color:var(--soft);margin-top:6px;">'+t.sizes.S.label+'</div>'
+      +'</div>';
+  }).join('');
+}
+function showTplSz(tId,sz){
+  var t=getTpls().find(function(x){return x.id===tId;});if(!t)return;
+  ['S','M','L'].forEach(function(s){var el=G('stab-'+tId+'-'+s);if(el){el.style.background=s===sz?'var(--plum)':'#fff';el.style.color=s===sz?'#fff':'var(--soft)';el.style.borderColor=s===sz?'var(--plum)':'var(--border)';}});
+  var box=G('tpl-ings-'+tId);if(box)box.innerHTML=rendTplSzIngs(t,sz);
+  var lbl=G('tpl-lbl-'+tId);if(lbl)lbl.textContent=t.sizes[sz].label;
+}
+function rendTplSzIngs(t,sz){
+  var ings=t.sizes[sz].ings;
+  var rows=ings.map(function(ing,idx){
+    return'<div style="display:grid;grid-template-columns:1fr 65px 65px 28px;gap:5px;align-items:center;margin-bottom:5px;">'
+      +'<input type="text" value="'+ing.name+'" style="font-size:12.5px;padding:6px 8px;" onchange="saveTplIng(\''+t.id+'\',\''+sz+'\','+idx+',0,this.value)">'
+      +'<input type="text" value="'+ing.qty+'" style="font-size:12.5px;padding:6px 8px;" placeholder="Qty" onchange="saveTplIng(\''+t.id+'\',\''+sz+'\','+idx+',1,this.value)">'
+      +'<input type="number" value="'+ing.cost+'" style="font-size:12.5px;padding:6px 8px;" placeholder="Cost" onchange="saveTplIng(\''+t.id+'\',\''+sz+'\','+idx+',2,this.value)">'
+      +'<button class="xbtn" style="width:28px;height:30px;font-size:14px;" onclick="rmTplIng(\''+t.id+'\',\''+sz+'\','+idx+')">&#215;</button>'
+      +'</div>';
+  }).join('');
+  return rows+'<button class="btn bo bsm" style="margin-top:5px;font-size:11px;" onclick="addTplIng(\''+t.id+'\',\''+sz+'\')">+ Row</button>';
+}
+function saveTplIng(tId,sz,idx,field,val){
+  var tpls=getTpls();var t=tpls.find(function(x){return x.id===tId;});if(!t)return;
+  var ing=t.sizes[sz].ings[idx];if(!ing)return;
+  if(field===0)ing.name=val;else if(field===1)ing.qty=val;else ing.cost=parseFloat(val)||0;
+  S.templates=tpls;saveState();
+}
+function rmTplIng(tId,sz,idx){
+  var tpls=getTpls();var t=tpls.find(function(x){return x.id===tId;});if(!t)return;
+  t.sizes[sz].ings.splice(idx,1);S.templates=tpls;saveState();showTplSz(tId,sz);
+}
+function addTplIng(tId,sz){
+  var tpls=getTpls();var t=tpls.find(function(x){return x.id===tId;});if(!t)return;
+  t.sizes[sz].ings.push({name:'New Ingredient',qty:'',cost:0});S.templates=tpls;saveState();showTplSz(tId,sz);
+}
+function deleteTpl(tId){
+  if(!confirm('Delete this template?'))return;
+  S.templates=getTpls().filter(function(t){return t.id!==tId;});saveState();rendTplList();
+}
+function openNewTplModal(){G('nt-name').value='';G('nt-emoji').value='';G('new-tpl-modal').classList.add('open');}
+function saveNewTpl(){
+  var name=GV('nt-name').trim();if(!name){toast('Enter name');return;}
+  var emoji=GV('nt-emoji')||'&#x1F370;';
+  var blank={name:'Flour',qty:'200g',cost:0};
+  var t={id:'c'+Date.now(),name:name,emoji:emoji,sizes:{
+    S:{label:'Small',ings:[{name:'Flour',qty:'200g',cost:0},{name:'Sugar',qty:'150g',cost:0},{name:'Butter',qty:'150g',cost:0}]},
+    M:{label:'Medium',ings:[{name:'Flour',qty:'300g',cost:0},{name:'Sugar',qty:'225g',cost:0},{name:'Butter',qty:'225g',cost:0}]},
+    L:{label:'Large',ings:[{name:'Flour',qty:'400g',cost:0},{name:'Sugar',qty:'300g',cost:0},{name:'Butter',qty:'300g',cost:0}]}
+  }};
+  var tpls=getTpls();tpls.push(t);S.templates=tpls;saveState();rendTplList();closeModal('new-tpl-modal');toast('Created!');
+}
+function resetTplDefaults(){if(!confirm('Reset templates to defaults?'))return;S.templates=null;saveState();rendTplList();toast('Reset!');}
+
+// ═══════════ FROSTING LIBRARY ═══════════
+function rendFrostingLib(){
+  var el=G('frosting-list');if(!el)return;
+  var frostings=getFrostings();
+  if(!frostings.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">&#x1F9C1;</div><p>No frostings yet. Add some!</p></div>';
+    return;
+  }
+  // header row
+  var hdr='<div style="display:grid;grid-template-columns:1fr 100px 36px;gap:6px;margin-bottom:6px;padding:0 2px;">'
+    +'<span style="font-size:10px;font-weight:700;color:var(--soft);">FROSTING NAME</span>'
+    +'<span style="font-size:10px;font-weight:700;color:var(--soft);">PRICE (GHS)</span>'
+    +'<span></span></div>';
+  el.innerHTML=hdr+frostings.map(function(f,idx){
+    return'<div style="display:grid;grid-template-columns:1fr 100px 36px;gap:6px;align-items:center;margin-bottom:7px;" id="frow-'+idx+'">'
+      +'<input type="text" value="'+f.name+'" style="font-size:13px;padding:8px 10px;" placeholder="Frosting name" onblur="saveFrosting('+idx+',0,this.value)" onkeydown="if(event.key===\'Enter\')this.blur()">'
+      +'<input type="number" value="'+f.price+'" style="font-size:13px;padding:8px 10px;" placeholder="0.00" min="0" step="0.01" onblur="saveFrosting('+idx+',1,this.value)" onkeydown="if(event.key===\'Enter\')this.blur()">'
+      +'<button class="xbtn" style="width:34px;height:36px;" onclick="rmFrosting('+idx+')" title="Remove">&#215;</button>'
+      +'</div>';
+  }).join('');
+}
+function saveFrosting(idx,field,val){
+  var frostings=getFrostings();
+  if(!frostings[idx])return;
+  if(field===0){if(val.trim())frostings[idx].name=val.trim();}
+  else frostings[idx].price=parseFloat(val)||0;
+  S.frostings=frostings;saveState();
+  toast('Frosting saved!');
+}
+function addFrosting(){
+  var frostings=getFrostings();
+  frostings.push({id:'f'+Date.now(),name:'New Frosting',price:0,note:''});
+  S.frostings=frostings;saveState();rendFrostingLib();
+  // focus the new name input
+  setTimeout(function(){
+    var rows=document.querySelectorAll('#frosting-list input[type=text]');
+    if(rows.length)rows[rows.length-1].focus();
+  },100);
+}
+function rmFrosting(idx){
+  if(!confirm('Remove this frosting?'))return;
+  var frostings=getFrostings();frostings.splice(idx,1);S.frostings=frostings;saveState();rendFrostingLib();toast('Frosting removed');
+}
+
+// ═══════════ SETTINGS ═══════════
+function markSettUnsaved(){var el=G('sett-unsaved');if(el)el.style.display='inline';}
+function applySett(){
+  var s=S.settings;
+  G('s-name').value=s.name||'';G('s-tag').value=s.tag||'';
+  G('s-phone').value=s.phone||'';G('s-email').value=s.email||'';
+  G('s-loc').value=s.loc||'';G('s-footer').value=s.footer||'';
+  var pi=G('s-payment-info');if(pi)pi.value=s.paymentInfo||'';
+  G('s-labour').value=s.defaultLabour||50;G('s-profit').value=s.defaultProfit||25;
+  var np=G('s-next-p');if(np)np.value=s.nextP||1;
+  var nr=G('s-next-r');if(nr)nr.value=s.nextR||1;
+  var el=G('sett-unsaved');if(el)el.style.display='none';
+}
+function saveSett(){
+  S.settings={
+    name:GV('s-name'),tag:GV('s-tag'),phone:GV('s-phone'),email:GV('s-email'),
+    loc:GV('s-loc'),footer:GV('s-footer'),paymentInfo:GV('s-payment-info')||'',
+    defaultLabour:parseFloat(GV('s-labour'))||50,defaultProfit:parseFloat(GV('s-profit'))||25,
+    nextP:parseInt(GV('s-next-p'))||1,nextR:parseInt(GV('s-next-r'))||1
+  };
+  saveState();var el=G('sett-unsaved');if(el)el.style.display='none';
+  toast('&#x2705; Settings saved!');
+}
+
+// ═══════════ DATA ═══════════
+function exportData(){
+  try{
+    var blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');a.href=url;a.download='whiskedbyvee-'+todayStr()+'.json';
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+    toast('Exported!');
+  }catch(e){toast('Export failed');}
+}
+function importData(ev){
+  var file=ev.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){try{var data=JSON.parse(e.target.result);if(confirm('Replace all data?')){S=data;saveState();applySett();rendInv();rendInvoices();rendIngMasterList();rendTplList();rendFrostingLib();buildCustSelect();rendCustList();loadExpenses();toast('Imported!');}}catch(e2){toast('Invalid file');}};
+  reader.readAsText(file);ev.target.value='';
+}
+
+// ═══════════ EXPENSES ═══════════
+function addExp(){
+  if(!S.expenses)S.expenses=[];expIdx++;
+  var id='exp'+expIdx;
+  var div=document.createElement('div');
+  div.style.cssText='display:grid;grid-template-columns:1fr 110px 30px;gap:6px;align-items:center;margin-bottom:6px;';
+  div.id=id;
+  div.innerHTML='<input type="text" placeholder="e.g. Packaging" onchange="saveExp(\''+id+'\',0,this.value)">'
+    +'<input type="number" placeholder="0.00" min="0" step="0.01" onchange="saveExp(\''+id+'\',1,this.value)">'
+    +'<button class="xbtn" onclick="rmExp(\''+id+'\')">&#215;</button>';
+  G('exp-list').appendChild(div);
+}
+function saveExp(rowId,field,val){
+  if(!S.expenses)S.expenses=[];
+  var entry=S.expenses.find(function(e){return e.id===rowId;});
+  if(!entry){entry={id:rowId,desc:'',amount:0};S.expenses.push(entry);}
+  if(field===0)entry.desc=val;else entry.amount=parseFloat(val)||0;
+  saveState();
+  var ft=G('tab-financials');if(ft&&ft.classList.contains('active'))rendFin();
+}
+function rmExp(id){
+  var el=G(id);if(el)el.remove();
+  S.expenses=(S.expenses||[]).filter(function(e){return e.id!==id;});
+  saveState();
+  var ft=G('tab-financials');if(ft&&ft.classList.contains('active'))rendFin();
+}
+function loadExpenses(){
+  if(!S.expenses||!S.expenses.length)return;
+  var list=G('exp-list');if(!list)return;
+  list.innerHTML='';expIdx=0;
+  S.expenses.forEach(function(e){
+    expIdx++;var id=e.id||('exp'+expIdx);e.id=id;
+    var div=document.createElement('div');
+    div.style.cssText='display:grid;grid-template-columns:1fr 110px 30px;gap:6px;align-items:center;margin-bottom:6px;';
+    div.id=id;
+    div.innerHTML='<input type="text" value="'+(e.desc||'')+'" placeholder="e.g. Packaging" onchange="saveExp(\''+id+'\',0,this.value)">'
+      +'<input type="number" value="'+(e.amount||0)+'" min="0" step="0.01" onchange="saveExp(\''+id+'\',1,this.value)">'
+      +'<button class="xbtn" onclick="rmExp(\''+id+'\')">&#215;</button>';
+    list.appendChild(div);
+  });
+}
+
+// ═══════════ FINANCIALS ═══════════
+function rendFin(){
+  var period=GV('fin-period');
+  var cr=G('fin-custom-range');if(cr)cr.style.display=(period==='custom'?'flex':'none');
+  var now=new Date(),y=now.getFullYear(),m=now.getMonth();
+  var orders=S.orders.filter(function(o){
+    if(period==='all')return true;
+    if(period==='custom'){var from=GV('fin-from'),to=GV('fin-to');return(!from||o.date>=from)&&(!to||o.date<=to);}
+    if(period==='thismonth'){var ms=y+'-'+(m<9?'0':'')+(m+1);return o.date&&o.date.startsWith(ms);}
+    if(period==='lastmonth'){var lm=m===0?11:m-1,ly=m===0?y-1:y;var lms=ly+'-'+(lm<9?'0':'')+(lm+1);return o.date&&o.date.startsWith(lms);}
+    if(period==='thisyear')return o.date&&o.date.startsWith(String(y));
+    return true;
+  });
+  var expTotal=(S.expenses||[]).reduce(function(s,e){return s+(parseFloat(e.amount)||0);},0);
+  var totalRev=0,totalIng=0,totalLab=0;
+  orders.forEach(function(o){totalRev+=o.total||0;totalIng+=o.ingTot||0;totalLab+=o.labour||0;});
+  var totalCOGS=totalIng+totalLab;
+  var grossP=totalRev-totalCOGS;
+  var netP=grossP-expTotal;
+  var grossM=totalRev>0?(grossP/totalRev*100):0;
+  var netM=totalRev>0?(netP/totalRev*100):0;
+  var avg=orders.length>0?(totalRev/orders.length):0;
+  var kpis=[
+    {label:'Total Revenue',val:'GHS '+totalRev.toFixed(2),col:'var(--ok)'},
+    {label:'Ingredient Costs',val:'GHS '+totalIng.toFixed(2),col:'var(--warn)'},
+    {label:'Labour Costs',val:'GHS '+totalLab.toFixed(2),col:'var(--warn)'},
+    {label:'Other Expenses',val:'GHS '+expTotal.toFixed(2),col:'var(--warn)'},
+    {label:'Gross Profit',val:'GHS '+grossP.toFixed(2),col:grossP>=0?'var(--ok)':'var(--bad)'},
+    {label:'Net Profit',val:'GHS '+netP.toFixed(2),col:netP>=0?'var(--ok)':'var(--bad)'},
+    {label:'Gross Margin',val:grossM.toFixed(1)+'%',col:grossM>=30?'var(--ok)':grossM>=10?'var(--warn)':'var(--bad)'},
+    {label:'Orders',val:String(orders.length),col:'var(--plum)'},
+  ];
+  G('fin-kpi-grid').innerHTML=kpis.map(function(k){return'<div class="card" style="padding:12px;margin-bottom:0;"><div style="font-size:10px;color:var(--soft);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">'+k.label+'</div><div style="font-size:18px;font-weight:800;color:'+k.col+';">'+k.val+'</div></div>';}).join('');
+  var vd=G('fin-verdict');
+  var icon,msg,bg,col;
+  if(!orders.length){icon='&#x1F4CB;';msg='No orders in this period.';bg='var(--cream-dk)';col='var(--soft)';}
+  else if(netP>0.005){icon='&#x1F4C8;';msg='Making a profit of GHS '+netP.toFixed(2)+' ('+netM.toFixed(1)+'% net margin)';bg='#d4edda';col='var(--ok)';}
+  else if(netP<-0.005){icon='&#x1F4C9;';msg='Running at a loss of GHS '+Math.abs(netP).toFixed(2)+'. Review pricing or costs.';bg='#f8d7da';col='var(--bad)';}
+  else{icon='&#x2696;&#xFE0F;';msg='Breaking even. Nudge your profit margin up.';bg='var(--gold-pale)';col='var(--gold)';}
+  vd.style.cssText='background:'+bg+';border:1px solid var(--border);text-align:center;padding:16px;border-radius:var(--r);margin-bottom:14px;';
+  vd.innerHTML='<div style="font-size:26px;margin-bottom:7px;">'+icon+'</div><div style="font-size:14px;font-weight:700;color:'+col+';">'+msg+'</div>';
+  // Charts
+  var last12=orders.slice(0,12).reverse();
+  var bL=last12.map(function(o){return(o.customer||'').split(' ')[0]||'Order';});
+  var bR=last12.map(function(o){return Math.round((o.total||0)*100)/100;});
+  var bC=last12.map(function(o){return Math.round(((o.ingTot||0)+(o.labour||0))*100)/100;});
+  if(finChartBar){try{finChartBar.destroy();}catch(e){}finChartBar=null;}
+  var ctxB=G('fin-chart-bar');
+  if(ctxB&&typeof Chart!=='undefined'){
+    finChartBar=new Chart(ctxB,{type:'bar',data:{labels:bL,datasets:[{label:'Revenue',data:bR,backgroundColor:'rgba(46,125,82,.7)',borderColor:'#2E7D52',borderWidth:1},{label:'Cost',data:bC,backgroundColor:'rgba(200,87,11,.55)',borderColor:'#C8570B',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return'GHS '+v;},font:{size:10}}},x:{ticks:{autoSkip:false,maxRotation:40,font:{size:10}}}}}});
+  }
+  var mMap={};S.orders.forEach(function(o){if(!o.date)return;var mo=o.date.substring(0,7);mMap[mo]=(mMap[mo]||0)+(o.total||0);});
+  var months=Object.keys(mMap).sort();
+  var mLab=months.map(function(m){var p=m.split('-');var mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return mn[parseInt(p[1])-1]+"'"+p[0].slice(2);});
+  var mVal=months.map(function(m){return Math.round(mMap[m]*100)/100;});
+  if(finChartLine){try{finChartLine.destroy();}catch(e){}finChartLine=null;}
+  var ctxL=G('fin-chart-line');
+  if(ctxL&&typeof Chart!=='undefined'){
+    finChartLine=new Chart(ctxL,{type:'line',data:{labels:mLab.length?mLab:['—'],datasets:[{label:'Revenue',data:mVal.length?mVal:[0],borderColor:'#3B0F35',backgroundColor:'rgba(59,15,53,.07)',fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#3B0F35',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return'GHS '+v;},font:{size:10}}},x:{ticks:{autoSkip:true,maxRotation:40,font:{size:10}}}}}});
+  }
+  var pD=[Math.max(0,totalIng),Math.max(0,totalLab),Math.max(0,expTotal),Math.max(0,netP)];
+  var pL=['Ingredients','Labour','Other Expenses','Net Profit'];
+  var pC=['#C8370B','#B8860B','#5C1F53','#2E7D52'];
+  if(finChartPie){try{finChartPie.destroy();}catch(e){}finChartPie=null;}
+  var ctxP=G('fin-chart-pie');
+  if(ctxP&&typeof Chart!=='undefined'){
+    finChartPie=new Chart(ctxP,{type:'doughnut',data:{labels:pL,datasets:[{data:pD,backgroundColor:pC,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:false}}}});
+  }
+  var pTot=pD.reduce(function(a,b){return a+b;},0);
+  var lgd=G('fin-pie-legend');
+  if(lgd)lgd.innerHTML=pL.map(function(l,i){var pct=pTot>0?((pD[i]/pTot)*100).toFixed(1):'0.0';return'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;"><span style="width:10px;height:10px;border-radius:2px;background:'+pC[i]+';flex-shrink:0;"></span><span style="font-size:12.5px;">'+l+'</span><span style="margin-left:auto;font-weight:700;color:var(--plum);font-size:12.5px;">GHS '+pD[i].toFixed(2)+' <span style="font-weight:400;color:var(--soft);">('+pct+'%)</span></span></div>';}).join('');
+  var tbody=G('fin-table-body');var emptyEl=G('fin-empty');var tbl=G('fin-table');
+  if(tbody&&tbl){
+    tbl.style.display=orders.length?'table':'none';
+    if(emptyEl)emptyEl.style.display=orders.length?'none':'block';
+    tbody.innerHTML=orders.map(function(o){var cost=(o.ingTot||0)+(o.labour||0);var pft=(o.total||0)-cost;var mgn=o.total>0?(pft/o.total*100):0;var pc=pft>=0?'var(--ok)':'var(--bad)';return'<tr style="border-bottom:1px solid var(--border);"><td style="padding:7px;"><div style="font-weight:700;font-size:12.5px;color:var(--plum);">'+(o.customer||'—')+'</div><div style="font-size:11px;color:var(--soft);">'+(o.date?fmtDate(o.date):'')+'</div></td><td style="text-align:right;padding:7px;font-size:12.5px;">'+(o.ingTot||0).toFixed(2)+'</td><td style="text-align:right;padding:7px;font-size:12.5px;">'+(o.labour||0).toFixed(2)+'</td><td style="text-align:right;padding:7px;font-size:12.5px;font-weight:700;">'+(o.total||0).toFixed(2)+'</td><td style="text-align:right;padding:7px;font-size:12.5px;font-weight:800;color:'+pc+';">'+(pft>=0?'+':'')+pft.toFixed(2)+'</td><td style="text-align:right;padding:7px;font-size:12.5px;color:'+pc+';">'+mgn.toFixed(1)+'%</td></tr>';}).join('');
+  }
+}
+
+// ═══════════ MODAL ═══════════
+function closeModal(id){G(id).classList.remove('open');}
+document.querySelectorAll('.mover').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});});
+var toastT2;
+function toast(msg){var el=G('toast');el.innerHTML=msg;el.classList.add('show');clearTimeout(toastT2);toastT2=setTimeout(function(){el.classList.remove('show');},2600);}
+
+init();
+</script>
+</body>
+</html>
